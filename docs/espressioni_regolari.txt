@@ -1,0 +1,50 @@
+ESPRESSIONI REGOLARI PER LA GRAMMATICA DELLE REGOLE DI PRODUZIONE:
+
+____Definiamo alcuni token di appoggio:
+Questi token non rappresentano i simboli terminali della grammatica, ma
+vengono unicamente utilizzati per la costruzione deitoken rappresentanti i
+simboli terminali della grammatica.
+
+L -> ["A"-"Z","a"-"z"]	/*lettere*/
+
+N -> ["0"-"9"]			/*numeri*/
+
+
+____Token per i commenti:
+E'possibile commentare su una o più linee. Un commento comincia con il simbolo
+"/*" e termina col simbolo "*/" se esso è un commento su piu linee, altrimenti
+comincia con il simbolo "//" e termina con il carattere speciali "\n".
+
+COMMENTO_M -> "/*"(~[])"*/"				/*commento multilinea*/
+
+COMMENTO_S -> "//"(~["\n","\r"])"\n"	/*commento su singola linea*/
+
+
+____Token per i terminalie ed i non terminali:
+Un non terminale è una stringa che comincia con una parentesi angolare aperta,
+a cui segue una qualsiasi combinazione di lettere, numeri o spazi bianchi, e
+termina con una parentesi angolare chiusa (non è ammessa la stringa vuota tra
+le parentesi angolari).
+Un terminale, invece, può essere espresso come tutte le possibili stringhe non 
+contenenti caratteri speciali del linguaggio, o lo spazio bianco.
+
+NON_TERM -> "<"(~["\n","\r","\t","<",">","|"," "])+">"				/*simboli non terminali*/
+
+TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]"])+			/*simboli terminali*/
+
+OPZ_NON_TERM -> "["<NON_TERM>"]"									/*non terminale opzionale*/
+
+OPZ_TERM -> "["<TERM>"]"											/*terminale opzionale*/
+
+EPS -> "eps"														/*terminale vuoto*/
+
+
+___Token per la definizione e la concatenazione
+Il Token "PUO_ESSERE" indica il confine tra la parte sinistra e la parte
+destra di una regola di produzione. La "PIPE" invece va a dividere le
+possibili parti destre di ogni regola di produzione.
+
+PUO_ESSERE -> "::="|"->"
+
+PIPE -> "|"
+ 

@@ -1,0 +1,46 @@
+options
+{
+	JDK_VERSION = "1.7";
+	static = false;
+}
+
+PARSER_BEGIN(RPLanguage)
+public class RPLanguage
+{
+}
+PARSER_END(RPLanguage)
+
+TOKEN_MGR_DECLS:
+{
+}
+
+SKIP:{
+  "\r"
+| "\n"
+| "\t"
+| " "}
+
+TOKEN:
+{
+  < #L: ["A"-"Z","a"-"z"] >												/*lettere*/
+
+| < #N: ["0"-"9"] >														/*numeri*/
+
+| < EPS: "eps" >														/*epslon*/
+
+| < PIPE: "|">															/*pipe*/
+
+| < PUO_ESSERE: "::="|"->" >							   				/*puo essere*/
+
+| < OPZ_NON_TERM : "["<NON_TERM>"]">									/*non terminale opzionale*/
+
+| < NON_TERM: "<"(~["\n","\r","\t","<",">","|"," "])+">" >				/*simboli non terminali*/
+
+| < OPZ_TERM : "["<TERM>"]">											/*terminale opzionale*/
+
+| < TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]"])+>			/*simboli terminali*/
+
+| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/
+
+| < COMMENTO_S: "//"(~["\n","\r"])*"\n" >								/*commento su singola linea*/										   								
+}
