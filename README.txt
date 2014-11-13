@@ -1,4 +1,4 @@
-RP_COMPILER
+RP_COMPILER (Compilatore di regole di produzione)
 
 Questo progetto mira alla realizzazione di un compilatore che
 traduca il linguaggio delle regole di produzione, per una grammatica, 
