@@ -50,7 +50,7 @@ TOKEN:
 
 | < OPZ_NON_TERM : "["<NON_TERM>"]">									/*non terminale opzionale*/
 
-| < NON_TERM: "<"(~["\n","\r","\t","<",">","|"," "])+">" >				/*simboli non terminali*/
+| < NON_TERM: "<"(~["\n","\r","\t","<",">"])+">" >						/*simboli non terminali*/
 
 | < OPZ_TERM : "["<TERM>"]">											/*terminale opzionale*/
 
