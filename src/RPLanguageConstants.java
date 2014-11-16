@@ -9,30 +9,30 @@ public interface RPLanguageConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int L = 5;
+  int L = 9;
   /** RegularExpression Id. */
-  int N = 6;
+  int N = 10;
   /** RegularExpression Id. */
-  int EPS = 7;
+  int PV = 11;
   /** RegularExpression Id. */
-  int PIPE = 8;
+  int EPS = 12;
   /** RegularExpression Id. */
-  int PUO_ESSERE = 9;
+  int PIPE = 13;
   /** RegularExpression Id. */
-  int OPZ_NON_TERM = 10;
+  int PUO_ESSERE = 14;
   /** RegularExpression Id. */
-  int NON_TERM = 11;
+  int OPZ_NON_TERM = 15;
   /** RegularExpression Id. */
-  int OPZ_TERM = 12;
+  int NON_TERM = 16;
   /** RegularExpression Id. */
-  int TERM = 13;
+  int OPZ_TERM = 17;
   /** RegularExpression Id. */
-  int COMMENTO_M = 14;
-  /** RegularExpression Id. */
-  int COMMENTO_S = 15;
+  int TERM = 18;
 
   /** Lexical state. */
   int DEFAULT = 0;
+  /** Lexical state. */
+  int IN_COMMENTO = 1;
 
   /** Literal token values. */
   String[] tokenImage = {
@@ -41,8 +41,13 @@ public interface RPLanguageConstants {
     "\"\\n\"",
     "\"\\t\"",
     "\" \"",
+    "<token of kind 5>",
+    "\"/*\"",
+    "\"*/\"",
+    "<token of kind 8>",
     "<L>",
     "<N>",
+    "\";\"",
     "\"eps\"",
     "\"|\"",
     "<PUO_ESSERE>",
@@ -50,8 +55,6 @@ public interface RPLanguageConstants {
     "<NON_TERM>",
     "<OPZ_TERM>",
     "<TERM>",
-    "<COMMENTO_M>",
-    "<COMMENTO_S>",
   };
 
 }

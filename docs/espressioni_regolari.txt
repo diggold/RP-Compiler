@@ -15,9 +15,9 @@ E'possibile commentare su una o più linee. Un commento comincia con il simbolo
 "/*" e termina col simbolo "*/" se esso è un commento su piu linee, altrimenti
 comincia con il simbolo "//" e termina con il carattere speciali "\n".
 
-COMMENTO_M -> "/*"(~[])"*/"				/*commento multilinea*/
+COMMENTO_M -> "/*"(~[])*"*/"				/*commento multilinea*/
 
-COMMENTO_S -> "//"(~["\n","\r"])"\n"	/*commento su singola linea*/
+COMMENTO_S -> "//"(~["\n","\r"])*("\n"|"\r")/*commento su singola linea*/
 
 
 ____Token per i terminalie ed i non terminali:
@@ -42,9 +42,12 @@ EPS -> "eps"														/*terminale vuoto*/
 ___Token per la definizione e la concatenazione
 Il Token "PUO_ESSERE" indica il confine tra la parte sinistra e la parte
 destra di una regola di produzione. La "PIPE" invece va a dividere le
-possibili parti destre di ogni regola di produzione.
+possibili parti destre di ogni regola di produzione. "PV", in fine, è il
+simbolo di terminazione di una regola di produzione.
 
 PUO_ESSERE -> "::="|"->"
 
 PIPE -> "|"
+
+PV -> ";"
  

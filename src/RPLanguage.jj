@@ -18,13 +18,29 @@ SKIP:{
   "\r"
 | "\n"
 | "\t"
-| " "}
+| " "
+| <"//"(~["\n","\r"])*("\n"|"\r") >								/*commento su singola linea*/}
+
+/*LO SKIP DEL COMMENTO MULTILINEA AVVIENE MEDIANE PASSAGGIO DI STATO LESSICALE*/
+SKIP:
+{
+  < "/*" > : IN_COMMENTO
+}
+<IN_COMMENTO>
+SKIP:
+{
+  < "*/" >: DEFAULT
+| < ~[] > 
+}
+/*----------------------------------------------------------------------------*/
 
 TOKEN:
 {
   < #L: ["A"-"Z","a"-"z"] >												/*lettere*/
 
 | < #N: ["0"-"9"] >														/*numeri*/
+
+| < PV: ";" >															/*punto e virgola*/
 
 | < EPS: "eps" >														/*epslon*/
 
@@ -38,9 +54,7 @@ TOKEN:
 
 | < OPZ_TERM : "["<TERM>"]">											/*terminale opzionale*/
 
-| < TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]"])+>			/*simboli terminali*/
+| < TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]","/", ";"])+>/*simboli terminali*/
 
-| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/
-
-| < COMMENTO_S: "//"(~["\n","\r"])*"\n" >								/*commento su singola linea*/										   								
+//| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/										   								
 }
