@@ -1,7 +1,9 @@
+/*-----------------------------------------------------PROGRAM*/
 <program> ::= <stms>
 <stms> ::= <stm> | <stm> PUNTOEVIRGOLA <stms> | eps
 <stm> ::= <io_stm> | <assign> | <if> | <loop>
 
+/*---------------------------------------------------STATEMENT*/
 <io_stm> ::= READ ID | WRITE <val> 
 <val> ::= ID | NUM
 
@@ -12,12 +14,15 @@
 
 <loop> ::= REPEAT <stms> UNTIL <expr>
 
+/*--------------------------------------------------EXPRESSION*/
 <expr> ::= <alg_expr> | <bool_expr>
 
+/*-----------------------------algebric expression*/
 <alg_expr> ::= <term_a> | <alg_expr> POIOMENO <term_a>
 <term_a> ::= <fatt_a> | <term_a> PERODIVISO <fatt_a>
 <fatt_a> ::= ID | NUM | PARAPERTA <alg_expr> PARCHIUSA
 
+/*------------------------------boolean expression*/
 <bool_expr> ::= <term_b> | <bool_expr> OR <term_b>
 <term_b> ::= <fatt_b> | <term_b> AND <fatt_b>
 <fatt_b> ::= <alg_expr> OPCONFRONTO <alg_expr> 
