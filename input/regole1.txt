@@ -27,4 +27,5 @@
 <term_b> ::= <fatt_b> | <term_b> AND <fatt_b>;
 <fatt_b> ::= <alg_expr> OPCONFRONTO <alg_expr> 
 			|[NOT]PARAPERTA <bool_expr> PARCHIUSA 
-			|<alg_expr>;
+			|<alg_expr>
+			|epsilon;
