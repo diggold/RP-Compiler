@@ -1,6 +1,6 @@
 /*-----------------------------------------------------PROGRAM*/
 loockahead(3)<program> ::= <stms>;
-<stms> ::= <stm> | <stm> PUNTOEVIRGOLA <stms> | eps;
+<stms> ::= <stm> | [<stm>] PUNTOEVIRGOLA <stms> | eps;
 <stm> ::= <io_stm> | <assign> | <if> | <loop>;
 
 /*---------------------------------------------------STATEMENT*/
@@ -8,7 +8,10 @@ loockahead(3)<program> ::= <stms>;
 <val> ::= ID | NUM;
 
 <assign> ::= ID ASSEGNAMENTO <expr>;
-
+/*commento
+multi
+linea
+*/
 <if> ::= IF <expr> THEN <stms> <S'>;
 <S'> ::=END | ELSE <stms> END;
 
