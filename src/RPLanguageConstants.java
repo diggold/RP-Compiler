@@ -9,25 +9,31 @@ public interface RPLanguageConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int L = 9;
+  int LETTERA = 9;
   /** RegularExpression Id. */
-  int N = 10;
+  int CIFRA = 10;
   /** RegularExpression Id. */
-  int PV = 11;
+  int N_LA = 11;
   /** RegularExpression Id. */
-  int EPS = 12;
+  int PV = 12;
   /** RegularExpression Id. */
-  int PIPE = 13;
+  int EPS = 13;
   /** RegularExpression Id. */
-  int PUO_ESSERE = 14;
+  int PIPE = 14;
   /** RegularExpression Id. */
-  int OPZ_NON_TERM = 15;
+  int PT_APERTA = 15;
   /** RegularExpression Id. */
-  int NON_TERM = 16;
+  int PT_CHIUSA = 16;
   /** RegularExpression Id. */
-  int OPZ_TERM = 17;
+  int PUO_ESSERE = 17;
   /** RegularExpression Id. */
-  int TERM = 18;
+  int OPZ_NON_TERM = 18;
+  /** RegularExpression Id. */
+  int NON_TERM = 19;
+  /** RegularExpression Id. */
+  int OPZ_TERM = 20;
+  /** RegularExpression Id. */
+  int TERM = 21;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -45,11 +51,14 @@ public interface RPLanguageConstants {
     "\"/*\"",
     "\"*/\"",
     "<token of kind 8>",
-    "<L>",
-    "<N>",
+    "<LETTERA>",
+    "<CIFRA>",
+    "<N_LA>",
     "\";\"",
     "\"eps\"",
     "\"|\"",
+    "\"(\"",
+    "\")\"",
     "<PUO_ESSERE>",
     "<OPZ_NON_TERM>",
     "<NON_TERM>",

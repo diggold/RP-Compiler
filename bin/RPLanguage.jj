@@ -36,15 +36,21 @@ SKIP:
 
 TOKEN:
 {
-  < #L: ["A"-"Z","a"-"z"] >												/*lettere*/
+  < #LETTERA: ["A"-"Z","a"-"z"] >										/*lettera*/
 
-| < #N: ["0"-"9"] >														/*numeri*/
+| < #CIFRA: ["0"-"9"] >													/*cifra*/
+
+| < N_LA: (<CIFRA>)+ >													/*numero di simboli di loockahead*/
 
 | < PV: ";" >															/*punto e virgola*/
 
 | < EPS: "eps" >														/*epslon*/
 
 | < PIPE: "|">															/*pipe*/
+
+| < PT_APERTA: "(" >													/*parentedi tonda aperta*/
+
+| < PT_CHIUSA: ")" >													/*parentesi tonda chiusa*/
 
 | < PUO_ESSERE: "::="|"->" >							   				/*puo essere*/
 
@@ -54,7 +60,7 @@ TOKEN:
 
 | < OPZ_TERM : "["<TERM>"]">											/*terminale opzionale*/
 
-| < TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]","/", ";"])+>/*simboli terminali*/
+| < TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]","/", ";","(",")"])+>/*simboli terminali*/
 
 //| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/										   								
 }

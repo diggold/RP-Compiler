@@ -5,9 +5,9 @@ Questi token non rappresentano i simboli terminali della grammatica, ma
 vengono unicamente utilizzati per la costruzione deitoken rappresentanti i
 simboli terminali della grammatica.
 
-L -> ["A"-"Z","a"-"z"]	/*lettere*/
+LETTERA -> ["A"-"Z","a"-"z"]/*lettera*/
 
-N -> ["0"-"9"]			/*numeri*/
+CIFRA -> ["0"-"9"]			/*cifra*/
 
 
 ____Token per i commenti:
@@ -51,5 +51,14 @@ PIPE -> "|"
 
 PV -> ";"
 
-NB:
-INSERIRE LE ESPRESSIONI REGOLARI PER I SIMBOLI DI LOOKAHEAD 
+___Token per l'indicazione del numero di simboli di loockahead
+Una data produzione può indicare un determinato numero di simboli di loockahead
+mediante l'istruzione "LOOCKAHEAD(n)".
+
+LOOCKAHEAD -> "LOOCKAHEAD"|"loockahead"
+
+P_APERTA -> "("
+
+P_CHIUSA -> ")"
+
+N_LA -> (CIFRA)+ 	/*numero di simboli di loockahead*/
