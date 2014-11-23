@@ -18,7 +18,7 @@ loockahead(3)<program> ::= <stms>;
 <expr> ::= <alg_expr> | <bool_expr>;
 
 //-----------------------------algebric expression
-<alg_expr> ::= <term_a> | <alg_expr> POIOMENO <term_a>;
+<alg_expr> ::= <term_a> | <alg_expr> PIUOMENO <term_a>;
 <term_a> ::= <fatt_a> | <term_a> PERODIVISO <fatt_a>;
 <fatt_a> ::= ID | NUM | PARAPERTA <alg_expr> PARCHIUSA;
 
