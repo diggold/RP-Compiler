@@ -1,0 +1,36 @@
+REGOLE SINTATTICHE PER LA GRAMMATICA DELLE REGOLE SINTATTICHE
+
+/*Una grammatica è un insieme di regole*/
+
+	<grammatica> ::= <regole>;
+
+/*Una insieme di regole può essere una singola regola
+ *oppure una regola seguita da un insieme di regole.*/
+ 
+	<regole> ::= <regola> | <regola> <regole>;
+
+/*Una regola può cominciare con l'indicazione di un determinato
+ *numero di simboli di loockahead necessari al parser generato
+ dal compilatore "JavaCC".
+ La parte sinistra della regola (testa) è un simbolo non terminale
+ della grammatica. A seguire vi è il simbolo "può essere" che rappresenta
+ il confine tra la testa ed il corpo della regola di produzione.
+ Successivamente vi è il "corpo" (parte sinistra della regola di produzione).
+ In fine il simbolo "punto e virgola" rappresenta la terminazione della regola.*/
+	
+	<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+
+/*Il corpo di una regola di produzione può essere un insieme di elementi
+ *oppure un insieme di elementi seguiti dal simbolo "pipe" e da un altro corpo.*/
+ 
+	<corpo> ::= <elementi> | <elementi> PIPE <corpo>;
+
+/*Un insieme di elementi di una regola di produzione possono essere un singolo
+ *elemento oppure un elemento concatenato ad un insieme di elementi.*/
+	
+	<elementi> ::= <elemento> | <elemento> <elementi>;
+
+/*Un elemento di una regola di produzione può essere un simbolo terminale o
+  un simbolo non terminale, oppure un simbolo terminale, o non terminale, opzionale, o "epsilon"*/
+	
+	<elemento> ::= TERM | NON_TERM | OPZ_TERM | OPZ_NON_TERM | eps;
