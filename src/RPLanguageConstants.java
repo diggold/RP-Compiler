@@ -13,27 +13,23 @@ public interface RPLanguageConstants {
   /** RegularExpression Id. */
   int CIFRA = 10;
   /** RegularExpression Id. */
-  int N_LA = 11;
+  int PV = 11;
   /** RegularExpression Id. */
-  int PV = 12;
+  int EPS = 12;
   /** RegularExpression Id. */
-  int EPS = 13;
+  int PIPE = 13;
   /** RegularExpression Id. */
-  int PIPE = 14;
+  int PUO_ESSERE = 14;
   /** RegularExpression Id. */
-  int PT_APERTA = 15;
+  int LOOCKAHEAD = 15;
   /** RegularExpression Id. */
-  int PT_CHIUSA = 16;
+  int OPZ_NON_TERM = 16;
   /** RegularExpression Id. */
-  int PUO_ESSERE = 17;
+  int NON_TERM = 17;
   /** RegularExpression Id. */
-  int OPZ_NON_TERM = 18;
+  int OPZ_TERM = 18;
   /** RegularExpression Id. */
-  int NON_TERM = 19;
-  /** RegularExpression Id. */
-  int OPZ_TERM = 20;
-  /** RegularExpression Id. */
-  int TERM = 21;
+  int TERM = 19;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -53,13 +49,11 @@ public interface RPLanguageConstants {
     "<token of kind 8>",
     "<LETTERA>",
     "<CIFRA>",
-    "<N_LA>",
     "\";\"",
     "\"eps\"",
     "\"|\"",
-    "\"(\"",
-    "\")\"",
     "<PUO_ESSERE>",
+    "<LOOCKAHEAD>",
     "<OPZ_NON_TERM>",
     "<NON_TERM>",
     "<OPZ_TERM>",

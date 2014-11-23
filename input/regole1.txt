@@ -1,5 +1,5 @@
 /*-----------------------------------------------------PROGRAM*/
-<program> ::= <stms>;
+loockahead(3)<program> ::= <stms>;
 <stms> ::= <stm> | <stm> PUNTOEVIRGOLA <stms> | eps;
 <stm> ::= <io_stm> | <assign> | <if> | <loop>;
 
