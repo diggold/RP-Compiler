@@ -51,14 +51,8 @@ PIPE -> "|"
 
 PV -> ";"
 
-___Token per l'indicazione del numero di simboli di loockahead
+___Token per l'indicazione del numero di simboli di loockahead.
 Una data produzione può indicare un determinato numero di simboli di loockahead
 mediante l'istruzione "LOOCKAHEAD(n)".
 
-LOOCKAHEAD -> "LOOCKAHEAD"|"loockahead"
-
-P_APERTA -> "("
-
-P_CHIUSA -> ")"
-
-N_LA -> (CIFRA)+ 	/*numero di simboli di loockahead*/
+LOOCKAHEAD -> ("LOOCKAHEAD"|"loockahead")"("(<CIFRA>)+")"			/*loockahead*/
