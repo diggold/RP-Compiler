@@ -47,6 +47,10 @@ TOKEN:
 
 | < #CIFRA: ["0"-"9"] >													/*cifra*/
 
+| <PARAPERTA_Q: "[">
+
+| <PARCHIUSA_Q: "]">
+
 | < PV: ";" >															/*punto e virgola*/
 
 | < EPS: "eps" >														/*epslon*/
@@ -57,16 +61,12 @@ TOKEN:
 
 | < LOOCKAHEAD: ("LOOCKAHEAD"|"loockahead")"("(<CIFRA>)+")" >			/*loockahead*/
 
-| < OPZ_NON_TERM : "["<NON_TERM>"]">									/*non terminale opzionale*/
-
 | < NON_TERM: "<"(~[													/*simbolo non terminali*/
 					"\n","\r","\t","<",">","|"," ",":","=",				
 					"[","]","/", ";","(",")","*","+","~",
 					"\"","'","?","#",",","-"
 				 ])+
 			  ">" >														
-
-| < OPZ_TERM : "["(<TERM>)+"]">											/*terminale opzionale*/
 
 | < TERM: (~[															/*simbolo terminali*/
 			"\n","\r","\t","<",">","|"," ",":","=",
@@ -130,12 +130,20 @@ void elementi_queue():
 | {System.out.println("<elementi_queue> ::= eps;");} {}
 }
 
-//<elementi> ::= <elemento> <elemento_queue>;
+//<elementi> ::= <elemento> <elemento_queue> | PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elemento_queue>;
+//<elementi_opz> ::= <elemento> <elemento_queue>;
 //<elemento_queue> ::= <elementi> | eps;
 void elementi():
 {}
 {
   {System.out.println("<elementi> ::=  <elemento> <elemento_queue>;");} elemento() elemento_queue()
+| {System.out.println("<elementi> ::=  PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elemento_queue>;");} <PARAPERTA_Q> elementi_opz() <PARCHIUSA_Q> elemento_queue()
+}
+
+void elementi_opz():
+{}
+{
+  {System.out.println("<elementi_opz> ::=  <elemento> <elemento_queue>;");} elemento() elemento_queue()
 }
 
 void elemento_queue():
@@ -151,7 +159,5 @@ void elemento():
 {
   {System.out.println("<elemento> ::=  TERM;");} <TERM>
 | {System.out.println("<elemento> ::=  NON_TERM;");} <NON_TERM>
-| {System.out.println("<elemento> ::=  OPZ_TERM;");} <OPZ_TERM>
-| {System.out.println("<elemento> ::=  OPZ_NON_TERM;");} <OPZ_NON_TERM>
 | {System.out.println("<elemento> ::=  EPS;");} <EPS>
 }
