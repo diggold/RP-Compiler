@@ -12,8 +12,8 @@ loockahead(3)<program> ::= <stms>;
 multi
 linea
 */
-<if> ::= IF <expr> THEN <stms> <S'>;
-<S'> ::=END | ELSE <stms> END;
+<if> ::= IF <expr> THEN <stms> <S>;
+<S> ::=END | ELSE <stms> END;
 
 <loop> ::= REPEAT <stms> UNTIL <expr>;
 

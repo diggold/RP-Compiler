@@ -59,11 +59,20 @@ TOKEN:
 
 | < OPZ_NON_TERM : "["<NON_TERM>"]">									/*non terminale opzionale*/
 
-| < NON_TERM: "<"(~["\n","\r","\t","<",">"])+">" >						/*simboli non terminali*/
+| < NON_TERM: "<"(~[													/*simbolo non terminali*/
+					"\n","\r","\t","<",">","|"," ",":","=",				
+					"[","]","/", ";","(",")","*","+","~",
+					"\"","'"
+				 ])+
+			  ">" >														
 
 | < OPZ_TERM : "["<TERM>"]">											/*terminale opzionale*/
 
-| < TERM: (~["\n","\r","\t","<",">","|"," ",":","=","[","]","/", ";","(",")"])+>/*simboli terminali*/
+| < TERM: (~[															/*simbolo terminali*/
+			"\n","\r","\t","<",">","|"," ",":","=",
+			"[","]","/", ";","(",")","*","+","~",
+			"\"","'"
+		  ])+>
 
 //| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/										   								
 }
