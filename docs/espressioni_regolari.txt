@@ -54,7 +54,7 @@ destra di una regola di produzione. La "PIPE" invece va a dividere le
 possibili parti destre di ogni regola di produzione. "PV", in fine, è il
 simbolo di terminazione di una regola di produzione.*/
 
-PUO_ESSERE -> "::="|"->"
+PUO_ESSERE -> "::="
 
 PIPE -> "|"
 
