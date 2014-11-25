@@ -52,7 +52,7 @@ public interface RPLanguageConstants {
     "\";\"",
     "\"eps\"",
     "\"|\"",
-    "<PUO_ESSERE>",
+    "\"::=\"",
     "<LOOCKAHEAD>",
     "<OPZ_NON_TERM>",
     "<NON_TERM>",

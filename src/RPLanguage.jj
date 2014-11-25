@@ -53,7 +53,7 @@ TOKEN:
 
 | < PIPE: "|">															/*pipe*/
 
-| < PUO_ESSERE: "::="|"->" >							   				/*puo essere*/
+| < PUO_ESSERE: "::=" >							   						/*puo essere*/
 
 | < LOOCKAHEAD: ("LOOCKAHEAD"|"loockahead")"("(<CIFRA>)+")" >			/*loockahead*/
 
@@ -74,7 +74,8 @@ TOKEN:
 			"\"","'","?","#",",","-"
 		  ])+>
 
-//| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/										   								
+//| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/
+//| < OPZ : "["((<NON_TERM>|<TERM>)(" ")?(<NON_TERM>|<TERM>)?)+"]">     /*lista di terminali e non terminali opzionali*/										   								
 }
 
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
