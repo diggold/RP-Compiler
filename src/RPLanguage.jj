@@ -62,16 +62,16 @@ TOKEN:
 | < NON_TERM: "<"(~[													/*simbolo non terminali*/
 					"\n","\r","\t","<",">","|"," ",":","=",				
 					"[","]","/", ";","(",")","*","+","~",
-					"\"","'"
+					"\"","'","?","#",",","-"
 				 ])+
 			  ">" >														
 
-| < OPZ_TERM : "["<TERM>"]">											/*terminale opzionale*/
+| < OPZ_TERM : "["(<TERM>)+"]">											/*terminale opzionale*/
 
 | < TERM: (~[															/*simbolo terminali*/
 			"\n","\r","\t","<",">","|"," ",":","=",
 			"[","]","/", ";","(",")","*","+","~",
-			"\"","'"
+			"\"","'","?","#",",","-"
 		  ])+>
 
 //| < COMMENTO_M: "/*"(~[])*"*/" >										/*commento multilinea*/										   								
