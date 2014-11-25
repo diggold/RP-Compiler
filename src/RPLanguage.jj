@@ -82,13 +82,19 @@ void grammatica():
   {System.out.println("<grammatica> ::= <regole>;");} regole()
 }
 
-//<regole> ::= <regola> | <regola> <regole>;
+//<regole> ::= <regola> <regola_queue>;
+//<regola_queue> ::= <regola> <regole> | eps;
 void regole():
 {}
 {
-  LOOKAHEAD(3)
-  {System.out.println("<regole> ::= <regola>;");} regola()
-| {System.out.println(" <regole> ::= <regola> <regole>;");} regola() regole()
+  {System.out.println("<regole> ::= <regola> <regola_queue>;");} regola() regola_queue()
+}
+
+void regola_queue():
+{}
+{
+  {System.out.println("<regola_queue> ::= <regole>;");} regole()
+| {System.out.println("<regola_queue> ::= eps;");} {}
 }
 
 //<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
@@ -99,22 +105,34 @@ void regola():
 | {System.out.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");} <NON_TERM> <PUO_ESSERE> corpo() <PV>
 }
 
-//<corpo> ::= <elementi> | <elementi> PIPE <corpo>;
+//<corpo> ::= <elementi> <elementi_queue>;
+//<elementi_queue> ::= PIPE <corpo> | eps;
 void corpo():
 {}
 {
-  LOOKAHEAD(3)
-  {System.out.println("<corpo> ::=  <elementi>;");} elementi()
-| {System.out.println("<corpo> ::=  <elementi> PIPE <corpo>;");} elementi() <PIPE> corpo()
+  {System.out.println("<corpo> ::=  <elementi> <elementi_queue>;");} elementi() elementi_queue()
 }
 
-//<elementi> ::= <elemento> | <elemento> <elementi>;
+void elementi_queue():
+{}
+{
+  {System.out.println("<elementi_queue> ::=  PIPE <corpo>;");} <PIPE> corpo()
+| {System.out.println("<elementi_queue> ::= eps;");} {}
+}
+
+//<elementi> ::= <elemento> <elemento_queue>;
+//<elemento_queue> ::= <elementi> | eps;
 void elementi():
 {}
 {
-  LOOKAHEAD(3)
-  {System.out.println("<elementi> ::=  <elemento>;");} elemento()
-| {System.out.println("<elementi> ::=  <elemento> <elementi>;");} elemento() elementi()
+  {System.out.println("<elementi> ::=  <elemento> <elemento_queue>;");} elemento() elemento_queue()
+}
+
+void elemento_queue():
+{}
+{
+  {System.out.println("<elemento_queue> ::= <elementi>;");} elementi()
+| {System.out.println("<elemento_queue> ::=  eps;");} {}
 }
 
 //<elemento> ::= TERM | NON_TERM | OPZ_TERM | OPZ_NON_TERM | eps;

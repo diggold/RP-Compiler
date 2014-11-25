@@ -1,4 +1,4 @@
-REGOLE SINTATTICHE PER LA GRAMMATICA DELLE REGOLE SINTATTICHE
+//------------------------------------------------REGOLE SINTATTICHE PER LA GRAMMATICA DELLE REGOLE SINTATTICHE
 
 /*Una grammatica è un insieme di regole*/
 
@@ -34,3 +34,54 @@ REGOLE SINTATTICHE PER LA GRAMMATICA DELLE REGOLE SINTATTICHE
   un simbolo non terminale, oppure un simbolo terminale, o non terminale, opzionale, o "epsilon"*/
 	
 	<elemento> ::= TERM | NON_TERM | OPZ_TERM | OPZ_NON_TERM | eps;
+	
+
+//-----------------------------------------------------------------------------------------------FATTORIZZAZIONI
+
+/*-------------------------------------------------------------------------1) 
+ *Bisogna fattorizzare la regola di produzione seguente:*/
+
+	<regole> ::= <regola> | <regola> <regole>;
+
+/*Mettiamo a fattor comune il non terminale "<regola>", ottenendo:*/
+
+	<regole> ::= <regola> <regola_queue>;
+	<regola_queue> ::= <regole> | eps;
+	
+/*-------------------------------------------------------------------------2)
+ *Bisogna fattorizzare la regola di produzione seguente:*/
+
+	<corpo> ::= <elementi> | <elementi> PIPE <corpo>;
+
+/*Mettiamo a fattor comune il non terminale "<elementi>", ottenendo:*/
+
+	<corpo> ::= <elementi> <elementi_queue>;
+	<elementi_queue> ::= PIPE <corpo> | eps;
+
+/*-------------------------------------------------------------------------3)
+ *Bisogna fattorizzare la regola di produzione seguente:*/
+
+	<elementi> ::= <elemento> | <elemento> <elementi>;
+
+/*Mettiamo a fattor comune il non terminale "<elemento>", ottenendo:*/
+
+	<elementi> ::= <elemento> <elemento_queue>;
+	<elemento_queue> ::= <elementi> | eps;
+	
+/*------------------------------------------------------------------RISULTATO
+
+	<grammatica> ::= <regole>;
+	
+	<regole> ::= <regola> <regola_queue>;
+	<regola_queue> ::= <regole> | eps;
+	
+	<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+	
+	<corpo> ::= <elementi> <elementi_queue>;
+	<elementi_queue> ::= PIPE <corpo> | eps;
+	
+	<elementi> ::= <elemento> <elemento_queue>;
+	<elemento_queue> ::= <elementi> | eps;
+	
+	<elemento> ::= TERM | NON_TERM | OPZ_TERM | OPZ_NON_TERM | eps;
+ 
