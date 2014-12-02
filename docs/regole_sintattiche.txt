@@ -10,7 +10,7 @@
 	<regole> ::= <regola> | <regola> <regole>;
 
 /*Una regola può cominciare con l'indicazione di un determinato
- *numero di simboli di loockahead necessari al parser generato
+ *numero di simboli di lookahead necessari al parser generato
  dal compilatore "JavaCC".
  La parte sinistra della regola (testa) è un simbolo non terminale
  della grammatica. A seguire vi è il simbolo "può essere" che rappresenta
@@ -18,7 +18,7 @@
  Successivamente vi è il "corpo" (parte destra della regola di produzione).
  In fine il simbolo "punto e virgola" rappresenta la terminazione della regola.*/
 	
-	<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+	<regola> ::= [LOOK_A_HEAD] NON_TERM PUO_ESSERE <corpo> PV;
 
 /*Il corpo di una regola di produzione può essere un insieme di elementi
  *oppure un insieme di elementi seguiti dal simbolo "pipe" e da un altro corpo.*/
@@ -31,6 +31,11 @@
 	
 	<elementi> ::= <elemento> | <elemento> <elementi> | PARAPERTA_Q <elementi_opz> PARCHIUSA_Q | PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elementi>;
 	<elementi_opz> ::= <elemento> | <elemento> <elementi>;
+	
+	/*NB: L'opzionalità deve essere trattata a questo livello perchè 
+	 *    non è il singolo elemento (terminale o non terminale)
+	 *    a poter essere opzionale, ma sono insiemi di elementi a poterlo essere, 
+	 *    all'interno del corpo di una regola di produzione.*/
 
 /*Un elemento di una regola di produzione può essere un simbolo terminale o
   un simbolo non terminale, oppure un simbolo terminale, o non terminale, opzionale, o "epsilon"*/
@@ -90,7 +95,7 @@
 	<regole> ::= <regola> <regola_queue>;
 	<regola_queue> ::= <regole> | eps;
 	
-	<regola> ::= [LOOKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+	<regola> ::= [LOOK_A_HEAD] NON_TERM PUO_ESSERE <corpo> PV;
 	
 	<corpo> ::= <elementi> <elementi_queue>;
 	<elementi_queue> ::= PIPE <corpo> | eps;
