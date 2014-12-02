@@ -25,7 +25,7 @@ public interface RPLanguageConstants {
   /** RegularExpression Id. */
   int PUO_ESSERE = 16;
   /** RegularExpression Id. */
-  int LOOCKAHEAD = 17;
+  int LOOK_A_HEAD = 17;
   /** RegularExpression Id. */
   int NON_TERM = 18;
   /** RegularExpression Id. */
@@ -55,7 +55,7 @@ public interface RPLanguageConstants {
     "\"eps\"",
     "\"|\"",
     "\"::=\"",
-    "<LOOCKAHEAD>",
+    "<LOOK_A_HEAD>",
     "<NON_TERM>",
     "<TERM>",
   };

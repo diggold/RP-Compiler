@@ -43,32 +43,32 @@ SKIP:
 
 TOKEN:
 {
-  < #LETTERA: ["A"-"Z","a"-"z"] >										/*lettera*/
+  < #LETTERA: ["A"-"Z","a"-"z"] > 								/*lettera*/
 
-| < #CIFRA: ["0"-"9"] >													/*cifra*/
+| < #CIFRA: ["0"-"9"] >			  								/*cifra*/
 
-| <PARAPERTA_Q: "[">
+| < PARAPERTA_Q: "[" >											/*opzionalità*/
 
-| <PARCHIUSA_Q: "]">
+| < PARCHIUSA_Q: "]" >											/*opzionalità*/
 
-| < PV: ";" >															/*punto e virgola*/
+| < PV: ";" >					 								/*punto e virgola*/
+	
+| < EPS: "eps" >				 								/*epslon*/
 
-| < EPS: "eps" >														/*epslon*/
+| < PIPE: "|">					 								/*pipe*/
 
-| < PIPE: "|">															/*pipe*/
+| < PUO_ESSERE: "::=" >			 								/*puo essere*/
 
-| < PUO_ESSERE: "::=" >							   						/*puo essere*/
+| < LOOK_A_HEAD: (("LOOKAHEAD")|"lookahead")"("(<CIFRA>)+")" >	/*loockahead*/
 
-| < LOOCKAHEAD: ("LOOCKAHEAD"|"loockahead")"("(<CIFRA>)+")" >			/*loockahead*/
-
-| < NON_TERM: "<"(~[													/*simbolo non terminali*/
+| < NON_TERM: "<"(~[											/*simbolo non terminali*/
 					"\n","\r","\t","<",">","|"," ",":","=",				
 					"[","]","/", ";","(",")","*","+","~",
 					"\"","'","?","#",",","-"
 				 ])+
 			  ">" >														
 
-| < TERM: (~[															/*simbolo terminali*/
+| < TERM: (~[													/*simbolo terminali*/
 			"\n","\r","\t","<",">","|"," ",":","=",
 			"[","]","/", ";","(",")","*","+","~",
 			"\"","'","?","#",",","-"
@@ -111,7 +111,7 @@ void regola_queue():
 void regola():
 {}
 {
-  {System.out.println("<regola> ::= LOOCKAHEAD NON_TERM PUO_ESSERE <corpo> PV;");} <LOOCKAHEAD> <NON_TERM> <PUO_ESSERE> corpo() <PV>
+  {System.out.println("<regola> ::= LOOK_A_HEAD NON_TERM PUO_ESSERE <corpo> PV;");} <LOOK_A_HEAD> <NON_TERM> <PUO_ESSERE> corpo() <PV>
 | {System.out.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");} <NON_TERM> <PUO_ESSERE> corpo() <PV>
 }
 

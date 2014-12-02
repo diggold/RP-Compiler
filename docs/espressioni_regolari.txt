@@ -59,7 +59,7 @@ PV -> ";"
 
 /*___Token per l'indicazione del numero di simboli di loockahead.
 Una data produzione può indicare un determinato numero di simboli di loockahead
-mediante l'istruzione "LOOCKAHEAD(n)".*/
+mediante l'istruzione "LOOKAHEAD(n)".*/
 
 LOOKAHEAD -> ("LOOKAHEAD"|"lookahead")"("(<CIFRA>)+")"			/*lookahead*/
 
