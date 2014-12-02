@@ -15,7 +15,7 @@
  La parte sinistra della regola (testa) è un simbolo non terminale
  della grammatica. A seguire vi è il simbolo "può essere" che rappresenta
  il confine tra la testa ed il corpo della regola di produzione.
- Successivamente vi è il "corpo" (parte sinistra della regola di produzione).
+ Successivamente vi è il "corpo" (parte destra della regola di produzione).
  In fine il simbolo "punto e virgola" rappresenta la terminazione della regola.*/
 	
 	<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
@@ -90,7 +90,7 @@
 	<regole> ::= <regola> <regola_queue>;
 	<regola_queue> ::= <regole> | eps;
 	
-	<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+	<regola> ::= [LOOKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
 	
 	<corpo> ::= <elementi> <elementi_queue>;
 	<elementi_queue> ::= PIPE <corpo> | eps;
