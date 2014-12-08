@@ -26,7 +26,8 @@ SKIP:{
 | "\n"
 | "\t"
 | " "
-| <"//"(~["\n","\r"])*("\n"|"\r") >								/*commento su singola linea*/}
+| <"//"(~["\n","\r"])*("\n"|"\r") >								/*commento su singola linea*/
+}
 
 /*LO SKIP DEL COMMENTO MULTILINEA AVVIENE MEDIANE PASSAGGIO DI STATO LESSICALE*/
 SKIP:
