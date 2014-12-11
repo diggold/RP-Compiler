@@ -66,7 +66,7 @@ TOKEN:
 
 | < NUM_LOOKAHEAD: (<CIFRA>)+ >									/*numero di simboli di lookahead*/
 
-| < LOOK_AHEAD: "LOOKAHEAD"|"lookahead" >						/*operatore di loockahead*/
+| < OP_LOOKAHEAD: "LOOKAHEAD"|"lookahead" >						/*operatore di loockahead*/
 
 | < NON_TERM: "<"(~[											/*simbolo non terminali*/
 					"\n","\r","\t","<",">","|"," ",":","=",				
@@ -118,7 +118,7 @@ void regola_queue():
 void regola():
 {}
 {
-  {System.out.println("<regola> ::= LOOK_A_HEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");} <LOOK_AHEAD> <PARAPERTA_T> <NUM_LOOKAHEAD> <PARCHIUSA_T> <NON_TERM> <PUO_ESSERE> corpo() <PV>
+  {System.out.println("<regola> ::= OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");} <OP_LOOKAHEAD> <PARAPERTA_T> <NUM_LOOKAHEAD> <PARCHIUSA_T> <NON_TERM> <PUO_ESSERE> corpo() <PV>
 | {System.out.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");} <NON_TERM> <PUO_ESSERE> corpo() <PV>
 }
 

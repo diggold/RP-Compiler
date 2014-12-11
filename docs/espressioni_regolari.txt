@@ -61,7 +61,7 @@ PV -> ";"
 Una data produzione può indicare un determinato numero di simboli di loockahead
 mediante l'istruzione "LOOKAHEAD(n)".*/
 
-LOOK_AHEAD -> ("LOOKAHEAD"|"lookahead")								/*operatore di lookahead*/
+OP_LOOKAHEAD -> ("LOOKAHEAD"|"lookahead")							/*operatore di lookahead*/
 
 NUM_LOOK_AHEAD -> (<CIFRA>)+										/*numero simboli di lookahead*/
 

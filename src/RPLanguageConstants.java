@@ -31,7 +31,7 @@ public interface RPLanguageConstants {
   /** RegularExpression Id. */
   int NUM_LOOKAHEAD = 19;
   /** RegularExpression Id. */
-  int LOOK_AHEAD = 20;
+  int OP_LOOKAHEAD = 20;
   /** RegularExpression Id. */
   int NON_TERM = 21;
   /** RegularExpression Id. */
@@ -64,7 +64,7 @@ public interface RPLanguageConstants {
     "\"|\"",
     "\"::=\"",
     "<NUM_LOOKAHEAD>",
-    "<LOOK_AHEAD>",
+    "<OP_LOOKAHEAD>",
     "<NON_TERM>",
     "<TERM>",
   };

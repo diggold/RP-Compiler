@@ -31,7 +31,7 @@ public class RPLanguage implements RPLanguageConstants {
 
   final public void regola_queue() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LOOK_AHEAD:
+    case OP_LOOKAHEAD:
     case NON_TERM:
    System.out.println("<regola_queue> ::= <regole>;");
       regole();
@@ -46,9 +46,9 @@ public class RPLanguage implements RPLanguageConstants {
 //<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
   final public void regola() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LOOK_AHEAD:
-   System.out.println("<regola> ::= LOOK_A_HEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");
-      jj_consume_token(LOOK_AHEAD);
+    case OP_LOOKAHEAD:
+   System.out.println("<regola> ::= OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");
+      jj_consume_token(OP_LOOKAHEAD);
       jj_consume_token(PARAPERTA_T);
       jj_consume_token(NUM_LOOKAHEAD);
       jj_consume_token(PARCHIUSA_T);
