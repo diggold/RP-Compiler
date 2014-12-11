@@ -31,7 +31,7 @@ public class RPLanguage implements RPLanguageConstants {
 
   final public void regola_queue() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LOOK_A_HEAD:
+    case LOOK_AHEAD:
     case NON_TERM:
    System.out.println("<regola_queue> ::= <regole>;");
       regole();
@@ -46,9 +46,12 @@ public class RPLanguage implements RPLanguageConstants {
 //<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
   final public void regola() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case LOOK_A_HEAD:
-   System.out.println("<regola> ::= LOOK_A_HEAD NON_TERM PUO_ESSERE <corpo> PV;");
-      jj_consume_token(LOOK_A_HEAD);
+    case LOOK_AHEAD:
+   System.out.println("<regola> ::= LOOK_A_HEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");
+      jj_consume_token(LOOK_AHEAD);
+      jj_consume_token(PARAPERTA_T);
+      jj_consume_token(NUM_LOOKAHEAD);
+      jj_consume_token(PARCHIUSA_T);
       jj_consume_token(NON_TERM);
       jj_consume_token(PUO_ESSERE);
       corpo();
@@ -175,7 +178,7 @@ public class RPLanguage implements RPLanguageConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x60000,0x60000,0x8000,0xc4800,0xc4800,0xc4000,};
+      jj_la1_0 = new int[] {0x300000,0x300000,0x20000,0x612000,0x612000,0x610000,};
    }
 
   /** Constructor with InputStream. */
@@ -292,7 +295,7 @@ public class RPLanguage implements RPLanguageConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[20];
+    boolean[] la1tokens = new boolean[23];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -306,7 +309,7 @@ public class RPLanguage implements RPLanguageConstants {
         }
       }
     }
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 23; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
