@@ -13,7 +13,7 @@ multi
 linea
 */
 <if> ::= [IF <expr>] THEN <stms> <S>;
-<S> ::=END | [ELSE <stms> END];
+LOOKAHEAD(2)<S> ::=END | [ELSE <stms> END];
 
 <loop> ::= REPEAT <stms> UNTIL <expr>;
 
@@ -21,13 +21,14 @@ linea
 <expr> ::= <alg_expr> | <bool_expr>;
 
 //-----------------------------algebric expression
-<alg_expr> ::= <term_a> | <alg_expr> PIUOMENO <term_a>;
+LOOKAHEAD(2)<alg_expr> ::= <term_a> | <alg_expr> PIUOMENO <term_a>;
 <term_a> ::= <fatt_a> | <term_a> PERODIVISO <fatt_a>;
 <fatt_a> ::= ID | NUM | PARAPERTA <alg_expr> PARCHIUSA;
 
 //------------------------------boolean expression
 <bool_expr> ::= <term_b> | <bool_expr> OR <term_b>;
 <term_b> ::= <fatt_b> | <term_b> AND <fatt_b>;
+lookahead(5)
 <fatt_b> ::= <alg_expr> OPCONFRONTO <alg_expr> 
 			|[NOT]PARAPERTA <bool_expr> PARCHIUSA 
 			|<alg_expr>
