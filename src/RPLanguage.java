@@ -43,7 +43,7 @@ public class RPLanguage implements RPLanguageConstants {
     }
   }
 
-//<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+//<regola> ::= [OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
   final public void regola() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case OP_LOOKAHEAD:

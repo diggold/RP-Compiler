@@ -114,7 +114,7 @@ void regola_queue():
 | {System.out.println("<regola_queue> ::= eps;");} {}
 }
 
-//<regola> ::= [LOOCKAHEAD] NON_TERM PUO_ESSERE <corpo> PV;
+//<regola> ::= [OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
 void regola():
 {}
 {
