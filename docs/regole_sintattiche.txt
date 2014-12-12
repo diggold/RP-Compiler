@@ -18,7 +18,7 @@
  Successivamente vi è il "corpo" (parte destra della regola di produzione).
  In fine il simbolo "punto e virgola" rappresenta la terminazione della regola.*/
 	
-	<regola> ::= [LOOK_A_HEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
+	<regola> ::= [OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
 
 /*Il corpo di una regola di produzione può essere un insieme di elementi
  *oppure un insieme di elementi seguiti dal simbolo "pipe" e da un altro corpo.*/
@@ -95,7 +95,7 @@
 	<regole> ::= <regola> <regola_queue>;
 	<regola_queue> ::= <regole> | eps;
 	
-	<regola> ::= [LOOK_A_HEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
+	<regola> ::= [OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
 	
 	<corpo> ::= <elementi> <elementi_queue>;
 	<elementi_queue> ::= PIPE <corpo> | eps;
