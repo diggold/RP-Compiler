@@ -137,20 +137,12 @@ void elementi_queue():
 | {System.out.println("<elementi_queue> ::= eps;");} {}
 }
 
-//<elementi> ::= <elemento> <elemento_queue> | PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elemento_queue>;
-//<elementi_opz> ::= <elemento> <elemento_queue>;
+//<elementi> ::= <elemento> <elemento_queue>;
 //<elemento_queue> ::= <elementi> | eps;
 void elementi():
 {}
 {
   {System.out.println("<elementi> ::=  <elemento> <elemento_queue>;");} elemento() elemento_queue()
-| {System.out.println("<elementi> ::=  PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elemento_queue>;");} <PARAPERTA_Q> elementi_opz() <PARCHIUSA_Q> elemento_queue()
-}
-
-void elementi_opz():
-{}
-{
-  {System.out.println("<elementi_opz> ::=  <elemento> <elemento_queue>;");} elemento() elemento_queue()
 }
 
 void elemento_queue():
@@ -160,11 +152,12 @@ void elemento_queue():
 | {System.out.println("<elemento_queue> ::=  eps;");} {}
 }
 
-//<elemento> ::= TERM | NON_TERM | OPZ_TERM | OPZ_NON_TERM | eps;
+//<elemento> ::= TERM | NON_TERM | eps | PARAPERTA_Q <elementi> PARCHIUSA_Q;
 void elemento():
 {}
 {
   {System.out.println("<elemento> ::=  TERM;");} <TERM>
 | {System.out.println("<elemento> ::=  NON_TERM;");} <NON_TERM>
 | {System.out.println("<elemento> ::=  EPS;");} <EPS>
+| {System.out.println("<elemento> ::= PARAPERTA_Q <elementi> PARCHIUSA_Q;");} <PARAPERTA_Q> elementi() <PARCHIUSA_Q>
 }

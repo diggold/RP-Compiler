@@ -93,34 +93,10 @@ public class RPLanguage implements RPLanguageConstants {
     }
   }
 
-//<elementi> ::= <elemento> <elemento_queue> | PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elemento_queue>;
-//<elementi_opz> ::= <elemento> <elemento_queue>;
+//<elementi> ::= <elemento> <elemento_queue>;
 //<elemento_queue> ::= <elementi> | eps;
   final public void elementi() throws ParseException {
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case EPS:
-    case NON_TERM:
-    case TERM:
    System.out.println("<elementi> ::=  <elemento> <elemento_queue>;");
-      elemento();
-      elemento_queue();
-      break;
-    case PARAPERTA_Q:
-   System.out.println("<elementi> ::=  PARAPERTA_Q <elementi_opz> PARCHIUSA_Q <elemento_queue>;");
-      jj_consume_token(PARAPERTA_Q);
-      elementi_opz();
-      jj_consume_token(PARCHIUSA_Q);
-      elemento_queue();
-      break;
-    default:
-      jj_la1[3] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-  }
-
-  final public void elementi_opz() throws ParseException {
-   System.out.println("<elementi_opz> ::=  <elemento> <elemento_queue>;");
     elemento();
     elemento_queue();
   }
@@ -135,13 +111,13 @@ public class RPLanguage implements RPLanguageConstants {
       elementi();
       break;
     default:
-      jj_la1[4] = jj_gen;
+      jj_la1[3] = jj_gen;
    System.out.println("<elemento_queue> ::=  eps;");
 
     }
   }
 
-//<elemento> ::= TERM | NON_TERM | OPZ_TERM | OPZ_NON_TERM | eps;
+//<elemento> ::= TERM | NON_TERM | eps | PARAPERTA_Q <elementi> PARCHIUSA_Q;
   final public void elemento() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case TERM:
@@ -156,8 +132,14 @@ public class RPLanguage implements RPLanguageConstants {
    System.out.println("<elemento> ::=  EPS;");
       jj_consume_token(EPS);
       break;
+    case PARAPERTA_Q:
+   System.out.println("<elemento> ::= PARAPERTA_Q <elementi> PARCHIUSA_Q;");
+      jj_consume_token(PARAPERTA_Q);
+      elementi();
+      jj_consume_token(PARCHIUSA_Q);
+      break;
     default:
-      jj_la1[5] = jj_gen;
+      jj_la1[4] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -172,13 +154,13 @@ public class RPLanguage implements RPLanguageConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[6];
+  final private int[] jj_la1 = new int[5];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x300000,0x300000,0x20000,0x612000,0x612000,0x610000,};
+      jj_la1_0 = new int[] {0x300000,0x300000,0x20000,0x612000,0x612000,};
    }
 
   /** Constructor with InputStream. */
@@ -192,7 +174,7 @@ public class RPLanguage implements RPLanguageConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -206,7 +188,7 @@ public class RPLanguage implements RPLanguageConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -216,7 +198,7 @@ public class RPLanguage implements RPLanguageConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -226,7 +208,7 @@ public class RPLanguage implements RPLanguageConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -235,7 +217,7 @@ public class RPLanguage implements RPLanguageConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -244,7 +226,7 @@ public class RPLanguage implements RPLanguageConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 5; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -300,7 +282,7 @@ public class RPLanguage implements RPLanguageConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 5; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
