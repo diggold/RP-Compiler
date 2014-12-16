@@ -78,7 +78,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 21 "rp.y" /* yacc.c:1909  */
+#line 10 "rp.y" /* yacc.c:1909  */
 
 	char* val;
 	struct node* nptr;

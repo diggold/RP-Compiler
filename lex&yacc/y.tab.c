@@ -68,20 +68,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include "./btree/btree.h"
 
-typedef struct node{
-		
-	char* val;
-	struct node* son;
-	struct node* brother;
-}node;
-
-
-node* mknode(char*, node*, int, ...);
-node* mkleaf(char*);
-
-
-#line 85 "y.tab.c" /* yacc.c:339  */
+#line 74 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -149,12 +138,12 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 21 "rp.y" /* yacc.c:355  */
+#line 10 "rp.y" /* yacc.c:355  */
 
 	char* val;
 	struct node* nptr;
 
-#line 158 "y.tab.c" /* yacc.c:355  */
+#line 147 "y.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -169,7 +158,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 173 "y.tab.c" /* yacc.c:358  */
+#line 162 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -467,8 +456,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    53,    53,    56,    57,    60,    62,    65,    66,    69,
-      70,    73,    74,    75,    76
+       0,    42,    42,    54,    56,    59,    64,    68,    71,    75,
+      78,    82,    85,    88,    91
 };
 #endif
 
@@ -1249,85 +1238,106 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 53 "rp.y" /* yacc.c:1646  */
-    {printf("grammatica->regole\n"); (yyval.nptr)=(yyvsp[0].nptr);}
-#line 1255 "y.tab.c" /* yacc.c:1646  */
+#line 42 "rp.y" /* yacc.c:1646  */
+    {printf("grammatica->regole\n"); 
+	   		 (yyval.nptr)=(yyvsp[0].nptr);
+	   		 printf("\n\n--------------------\n"
+				"PRE-ORDER VISIT\n"
+				"--------------------\n");
+			 btree_preorder_visit((yyval.nptr));
+			 printf("\n\n--------------------\n"
+				"POST-ORDER VISIT\n"
+				"--------------------\n");
+			 btree_postorder_visit((yyval.nptr));}
+#line 1253 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 56 "rp.y" /* yacc.c:1646  */
-    {printf("regole->regola\n"); (yyval.nptr)=(yyvsp[0].nptr);}
-#line 1261 "y.tab.c" /* yacc.c:1646  */
+#line 54 "rp.y" /* yacc.c:1646  */
+    {printf("regole->regola\n"); 
+       			 (yyval.nptr)=(yyvsp[0].nptr);}
+#line 1260 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 57 "rp.y" /* yacc.c:1646  */
-    {printf("regole->regola regole\n"); (yyval.nptr)=mknode("seq", (yyvsp[-1].nptr), 1, (yyvsp[0].nptr));}
-#line 1267 "y.tab.c" /* yacc.c:1646  */
+#line 56 "rp.y" /* yacc.c:1646  */
+    {printf("regole->regola regole\n"); (yyval.nptr)=btree_mknode("seq", (yyvsp[-1].nptr), 1, (yyvsp[0].nptr));}
+#line 1266 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 61 "rp.y" /* yacc.c:1646  */
-    {printf("regola->OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE corpo PV\n"); (yyval.nptr)=mknode("::=", mkleaf((yyvsp[-5].val)), 2, mkleaf((yyvsp[-3].val)), (yyvsp[-1].nptr));}
-#line 1273 "y.tab.c" /* yacc.c:1646  */
+#line 60 "rp.y" /* yacc.c:1646  */
+    {printf("regola->OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD"
+						"PARCHIUSA_T NON_TERM PUO_ESSERE corpo PV\n"); 
+					 (yyval.nptr)=btree_mknode("::=", btree_mkleaf((yyvsp[-5].val)), 2, btree_mkleaf((yyvsp[-3].val)), (yyvsp[-1].nptr));}
+#line 1274 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 62 "rp.y" /* yacc.c:1646  */
-    {printf("regola->NON_TERM PUO_ESSERE corpo PV\n"); (yyval.nptr)=mknode("::=", mkleaf((yyvsp[-3].val)), 1, (yyvsp[-1].nptr));}
-#line 1279 "y.tab.c" /* yacc.c:1646  */
+#line 64 "rp.y" /* yacc.c:1646  */
+    {printf("regola->NON_TERM PUO_ESSERE corpo PV\n"); 
+					 (yyval.nptr)=btree_mknode("::=", btree_mkleaf((yyvsp[-3].val)), 1, (yyvsp[-1].nptr));}
+#line 1281 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 65 "rp.y" /* yacc.c:1646  */
-    {printf("corpo->elementi\n"); (yyval.nptr)=(yyvsp[0].nptr);}
-#line 1285 "y.tab.c" /* yacc.c:1646  */
+#line 68 "rp.y" /* yacc.c:1646  */
+    {printf("corpo->elementi\n");
+      				 (yyval.nptr)=(yyvsp[0].nptr);}
+#line 1288 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 66 "rp.y" /* yacc.c:1646  */
-    {printf("corpo->elementi PIPE corpo\n"); (yyval.nptr)=mknode("|", (yyvsp[-2].nptr), 1, (yyvsp[0].nptr));}
-#line 1291 "y.tab.c" /* yacc.c:1646  */
+#line 71 "rp.y" /* yacc.c:1646  */
+    {printf("corpo->elementi PIPE corpo\n");
+				 (yyval.nptr)=btree_mknode("|", (yyvsp[-2].nptr), 1, (yyvsp[0].nptr));}
+#line 1295 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 69 "rp.y" /* yacc.c:1646  */
-    {printf("elementi->elemento\n"); (yyval.nptr)=(yyvsp[0].nptr);}
-#line 1297 "y.tab.c" /* yacc.c:1646  */
+#line 75 "rp.y" /* yacc.c:1646  */
+    {printf("elementi->elemento\n");
+	 			 (yyval.nptr)=(yyvsp[0].nptr);}
+#line 1302 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 70 "rp.y" /* yacc.c:1646  */
-    {printf("elementi->elemento elementi\n;"); (yyval.nptr)=mknode("concat", (yyvsp[-1].nptr), 1, (yyvsp[0].nptr));}
-#line 1303 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 73 "rp.y" /* yacc.c:1646  */
-    {printf("elemento->TERM"); (yyval.nptr)=mkleaf((yyvsp[0].val));}
+#line 78 "rp.y" /* yacc.c:1646  */
+    {printf("elementi->elemento elementi\n;");
+				 (yyval.nptr)=btree_mknode("concat", (yyvsp[-1].nptr), 1, (yyvsp[0].nptr));}
 #line 1309 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 11:
+#line 82 "rp.y" /* yacc.c:1646  */
+    {printf("elemento->TERM\n"); 
+	   					 (yyval.nptr)=btree_mkleaf((yyvsp[0].val));}
+#line 1316 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 12:
-#line 74 "rp.y" /* yacc.c:1646  */
-    {printf("elemento->TERM"); (yyval.nptr)=mkleaf((yyvsp[0].val));}
-#line 1315 "y.tab.c" /* yacc.c:1646  */
+#line 85 "rp.y" /* yacc.c:1646  */
+    {printf("elemento->TERM\n");
+						 (yyval.nptr)=btree_mkleaf((yyvsp[0].val));}
+#line 1323 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 75 "rp.y" /* yacc.c:1646  */
-    {printf("elemento->TERM"); (yyval.nptr)=mkleaf((yyvsp[0].val));}
-#line 1321 "y.tab.c" /* yacc.c:1646  */
+#line 88 "rp.y" /* yacc.c:1646  */
+    {printf("elemento->TERM\n");
+						 (yyval.nptr)=btree_mkleaf((yyvsp[0].val));}
+#line 1330 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 76 "rp.y" /* yacc.c:1646  */
-    {printf("elemento->PARAPERTA_Q elementi PARCHIUSA_Q\n"); (yyval.nptr)=mknode("?", (yyvsp[-1].nptr), 0);}
-#line 1327 "y.tab.c" /* yacc.c:1646  */
+#line 91 "rp.y" /* yacc.c:1646  */
+    {printf("elemento->PARAPERTA_Q elementi PARCHIUSA_Q\n");
+						 (yyval.nptr)=btree_mknode("?", (yyvsp[-1].nptr), 0);}
+#line 1337 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1331 "y.tab.c" /* yacc.c:1646  */
+#line 1341 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1555,65 +1565,18 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 79 "rp.y" /* yacc.c:1906  */
+#line 95 "rp.y" /* yacc.c:1906  */
 
 /*------------------------------------------------------------------------FINE SEZIONE 2*/
 
 
 /*--------------------------------------------------------SEZIONE 3: ROUTINE AUSILIARIE*/
 
-/*crea un nodo*/
-node* mknode(char* op		/*operazione - valore associato al nodo*/, 
-	     node* son		/*figlio*/, 
-             int n_son_brothers/*numero altri figli (visti come lista di nodi fratelli del nodo figlio)*/, 
-	     ... 		/*lista figli - fratelli del primo figlio "son"*/)
-{
-	
-	//-------------------------------------------------------------alloca spazio per il nodo corrente
-	node* nptr=(node*)malloc(sizeof(node));
-
-	//---------------------------------------------------avvalora i primi due campi del nodo corrente
-	nptr->val=op;//assegna il valore
-	nptr->son=son;//assegna il figlio
-
-	//-----------------------------creazione figli successivi come lista di fratelli del primo figlio
-	int i;
-	va_list argP;
-
-	va_start(argP, n_son_brothers);	//inizio lettura argomenti variabili
-
-	node* current_nptr=nptr->son;
-	
-	//per ogni successivo "figlio" viene assegnato 
-	//un "fratello" al primo figlio
-	for(i=0; i<n_son_brothers; i++){
-
-		current_nptr->brother=va_arg(argP, node*);
-		current_nptr=current_nptr->brother;
-	}
-
-	va_end(argP); //fine lettura argomenti variabili
-
-	return nptr;
-}
-
-
-//crea un nodo foglia
-node* mkleaf(char* val){
-	
-	//alloca lo spazio per la struttura "node"
-	node* nptr=(node*)malloc(sizeof(node));
-
-	//avvalora i campi del nodo foglia
-	nptr->val=val;
-	nptr->son=NULL;
-	nptr->brother=NULL;
-
-	return nptr;	
-}
-
 int main(){
-
+	
+	printf("\n\n--------------------\n"
+	       "PARSING\n"
+	       "--------------------\n");
 	yyparse();
 	return 0;
 }

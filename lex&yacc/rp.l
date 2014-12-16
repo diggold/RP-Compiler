@@ -31,33 +31,33 @@ CIFRA	[0-9]
 <IN_COMMENT>\n   { ++yylineno; } /*SE IL COMMENTO MULTININEA E' SU PIU' LINEE INCREMENTA LA VARIABILE "yylineno"*/
 
 
-"("				{yylval.val=yytext;return PARAPERTA_T;}
+"("				{yylval.val=strdup(yytext);return PARAPERTA_T;}
 
-")"				{yylval.val=yytext;return PARCHIUSA_T;}
+")"				{yylval.val=strdup(yytext);return PARCHIUSA_T;}
 
-"["				{yylval.val=yytext;return PARAPERTA_Q;}	
+"["				{yylval.val=strdup(yytext);return PARAPERTA_Q;}	
 
-"]"				{yylval.val=yytext;return PARCHIUSA_Q;}
+"]"				{yylval.val=strdup(yytext);return PARCHIUSA_Q;}
 
-";"				{yylval.val=yytext;return PV;}
+";"				{yylval.val=strdup(yytext);return PV;}
 
-"eps"				{yylval.val=yytext;return EPS;}
+"eps"				{yylval.val=strdup(yytext);return EPS;}
 
-"|"				{yylval.val=yytext;return PIPE;}
+"|"				{yylval.val=strdup(yytext);return PIPE;}
 
-"::="				{yylval.val=yytext;return PUO_ESSERE;}
+"::="				{yylval.val=strdup(yytext);return PUO_ESSERE;}
 
-{CIFRA}+			{yylval.val=yytext;return NUM_LOOKAHEAD;}
+{CIFRA}+			{yylval.val=strdup(yytext);return NUM_LOOKAHEAD;}
 
-("LOOKAHEAD")|("lookahead")	{yylval.val=yytext;return OP_LOOKAHEAD;}
+("LOOKAHEAD")|("lookahead")	{yylval.val=strdup(yytext);return OP_LOOKAHEAD;}
 
-"<"[^.\n\r\t<>| :=[\]+~\\"'?#,\-();/*]+">" {yylval.val=yytext;return NON_TERM;}
+"<"[^.\n\r\t<>| :=[\]+~\\"'?#,\-();/*]+">" {yylval.val=strdup(yytext);return NON_TERM;}
 
-[^.\n\r\t<>| :=[\]+~\\"'?#,\-();/*]+ 	{yylval.val=yytext;return TERM;}
+[^.\n\r\t<>| :=[\]+~\\"'?#,\-();/*]+ 	{yylval.val=strdup(yytext);return TERM;}
 
 
  /*--ERROR--*/
-.				{;}
+.				{yyerror("lexical error");}
 				
  /*------------------------------------------------------------------------------------FINE SEZIONE 2*/
 %%

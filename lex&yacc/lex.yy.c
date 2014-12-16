@@ -813,68 +813,68 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 34 "rp.l"
-{yylval.val=yytext;return PARAPERTA_T;}
+{yylval.val=strdup(yytext);return PARAPERTA_T;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 36 "rp.l"
-{yylval.val=yytext;return PARCHIUSA_T;}
+{yylval.val=strdup(yytext);return PARCHIUSA_T;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 38 "rp.l"
-{yylval.val=yytext;return PARAPERTA_Q;}	
+{yylval.val=strdup(yytext);return PARAPERTA_Q;}	
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 40 "rp.l"
-{yylval.val=yytext;return PARCHIUSA_Q;}
+{yylval.val=strdup(yytext);return PARCHIUSA_Q;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 42 "rp.l"
-{yylval.val=yytext;return PV;}
+{yylval.val=strdup(yytext);return PV;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 44 "rp.l"
-{yylval.val=yytext;return EPS;}
+{yylval.val=strdup(yytext);return EPS;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 46 "rp.l"
-{yylval.val=yytext;return PIPE;}
+{yylval.val=strdup(yytext);return PIPE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 48 "rp.l"
-{yylval.val=yytext;return PUO_ESSERE;}
+{yylval.val=strdup(yytext);return PUO_ESSERE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 50 "rp.l"
-{yylval.val=yytext;return NUM_LOOKAHEAD;}
+{yylval.val=strdup(yytext);return NUM_LOOKAHEAD;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 52 "rp.l"
-{yylval.val=yytext;return OP_LOOKAHEAD;}
+{yylval.val=strdup(yytext);return OP_LOOKAHEAD;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 54 "rp.l"
-{yylval.val=yytext;return NON_TERM;}
+{yylval.val=strdup(yytext);return NON_TERM;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 56 "rp.l"
-{yylval.val=yytext;return TERM;}
+{yylval.val=strdup(yytext);return TERM;}
 	YY_BREAK
 /*--ERROR--*/
 case 20:
 YY_RULE_SETUP
 #line 60 "rp.l"
-{;}
+{yyerror("lexical error");}
 	YY_BREAK
 /*------------------------------------------------------------------------------------FINE SEZIONE 2*/
 case 21:
