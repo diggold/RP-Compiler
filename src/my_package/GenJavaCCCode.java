@@ -24,6 +24,7 @@ public class GenJavaCCCode {
 					
 				case EPS:{
 					
+					//concatena il nonterminale epsilon ("{}" in javaCC)
 					String line=code.remove(code.size()-1);
 					line=line+"{}";
 					code.addElement(line);
@@ -83,6 +84,7 @@ public class GenJavaCCCode {
 					
 					//altra parte destra della regola
 					this.genCode(node.getSon().getBrother());
+					
 					break;
 				}
 				
