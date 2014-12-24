@@ -1,17 +1,17 @@
 package my_package;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 //questa classe si occupa della generazione del codice
 //javaCC a partire dall'albero sintattico
 public class GenJavaCCCode {
 	
-	private Vector<String> code;
+	private ArrayList<String> code;
 	
 	//metodo pubblico per la generazione del codice
-	public Vector<String> genCode(Btree tree){
+	public ArrayList<String> genCode(Btree tree){
 		
-		code=new Vector<String>();
-		
+		code=new ArrayList<String>();
 		this.genCode(tree.getRoot());
 		
 		return code;
@@ -31,7 +31,7 @@ public class GenJavaCCCode {
 					//concatena il nonterminale epsilon ("{}" in javaCC)
 					String line=code.remove(code.size()-1);
 					line=line+"{}";
-					code.addElement(line);
+					code.add(line);
 					
 					break;
 				}
@@ -41,7 +41,7 @@ public class GenJavaCCCode {
 					//richiama la funzione corrispondente al simbolo non terminale
 					String line=code.remove(code.size()-1);
 					line=line+node.getVal().replace("<", "").replace(">", "") + "()";
-					code.addElement(line);
+					code.add(line);
 					
 					break;
 				}
@@ -51,7 +51,7 @@ public class GenJavaCCCode {
 					//concatena il token corrispondente al simbolo terminale
 					String line=code.remove(code.size()-1);
 					line=line+"<"+node.getVal()+">";
-					code.addElement(line);
+					code.add(line);
 					
 					break;
 				}
@@ -61,7 +61,7 @@ public class GenJavaCCCode {
 					//apre la parentesi per raggruppare i simboli terminali e non terminali opzionali
 					String line=code.remove(code.size()-1);
 					line=line+"(";
-					code.addElement(line);
+					code.add(line);
 					
 					//simboli terminali e non terminali opzionali
 					this.genCode(node.getSon());
@@ -69,7 +69,7 @@ public class GenJavaCCCode {
 					//chiude la parentesi di raggruppamento e inserisce il simbolo di opzionalita
 					line=code.remove(code.size()-1);
 					line=line+")?";
-					code.addElement(line);
+					code.add(line);
 					
 					break;
 				}
@@ -84,7 +84,7 @@ public class GenJavaCCCode {
 					this.genCode(node.getSon());
 					
 					//|
-					code.addElement("|");
+					code.add("|");
 					
 					//altra parte destra della regola
 					this.genCode(node.getSon().getBrother());
@@ -110,13 +110,13 @@ public class GenJavaCCCode {
 					//void testa_regola():
 					//{}
 					//{
-					code.addElement("void " + node.getSon().getVal().replace("<", "").replace(">", "") + "():");
-					code.addElement("{}");
-					code.addElement("{");
+					code.add("void " + node.getSon().getVal().replace("<", "").replace(">", "") + "():");
+					code.add("{}");
+					code.add("{");
 					//...corpo della regola...
 					this.genCode(node.getSon().getBrother());
 					//}
-					code.addElement("}");
+					code.add("}");
 					break;
 				}
 				
@@ -126,14 +126,14 @@ public class GenJavaCCCode {
 					//{}
 					//{
 					//LOOKAHEAD(n)
-					code.addElement("void " + node.getSon().getBrother().getVal().replace("<", "").replace(">", "") + "():");
-					code.addElement("{}");
-					code.addElement("{");
-					code.addElement("LOOKAHEAD(" + node.getSon().getVal() +")\n");
+					code.add("void " + node.getSon().getBrother().getVal().replace("<", "").replace(">", "") + "():");
+					code.add("{}");
+					code.add("{");
+					code.add("LOOKAHEAD(" + node.getSon().getVal() +")\n");
 					//...corpo della regola...
 					this.genCode(node.getSon().getBrother().getBrother());
 					//}
-					code.addElement("}");
+					code.add("}");
 					break;
 				}
 				

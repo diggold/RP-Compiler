@@ -6,3 +6,10 @@
 /Token.java
 /TokenMgrError.java
 /my_package
+/ParseException.class
+/RPLanguage.class
+/RPLanguageConstants.class
+/RPLanguageTokenManager.class
+/SimpleCharStream.class
+/Token.class
+/TokenMgrError.class

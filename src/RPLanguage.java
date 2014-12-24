@@ -7,27 +7,21 @@ public class RPLanguage implements RPLanguageConstants {
         public static void main(String args []) throws ParseException, FileNotFoundException
         {
         RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole1.txt")));
-        Node root=parser.start();
 
-        Btree tree=new Btree(root);
-        Visitor visitor=new Visitor();
+                //parsing e costruzione dell'albero sintattico
+                Node root=parser.start();
+                Btree tree=new Btree(root);
+                Visitor visitor=new Visitor();
 
-                System.out.println("\u005cnPRE-ORDER VISIT:\u005cn");
-        Vector <Node> nodeList = visitor.preorderVisit(tree);
-                int i;
-        for(i=0; i<nodeList.size(); i++)
-                System.out.println((nodeList.elementAt(i)).getVal()+"\u005cn");
+//		//visita preorder dell'albero sinattico//		System.out.println("\nPRE-ORDER VISIT:\n");//		ArrayList <Node> nodeList = visitor.preorderVisit(tree);//		Iterator<Node> itr1=nodeList.iterator();//		while(itr1.hasNext())//    		System.out.println((itr1.next()).getVal()+"\n");////		//visita postorder dell'albero sintattico//		System.out.println("\nPOST-ORDER VISIT:\n");//		nodeList = visitor.postorderVisit(tree);//		itr1=nodeList.iterator();//		while(itr1.hasNext())//			System.out.println((itr1.next()).getVal()+"\n");
 
-        System.out.println("\u005cnPOST-ORDER VISIT:\u005cn");
-        nodeList = visitor.postorderVisit(tree);
-        for(i=0; i<nodeList.size(); i++)
-                System.out.println((nodeList.elementAt(i)).getVal()+"\u005cn");
-
-                System.out.println("\u005cnJavaCC code:\u005cn");
-        GenJavaCCCode generator = new GenJavaCCCode();
-        Vector<String> code=generator.genCode(tree);
-        for(i=0; i<code.size(); i++)
-                System.out.println(code.elementAt(i));
+                //generazione del codice per javaCC
+                System.out.println("\u005cn\u005cnJavaCC-code:\u005cn");
+                GenJavaCCCode generator = new GenJavaCCCode();
+                ArrayList<String> code=generator.genCode(tree);
+                Iterator<String> itr2=code.iterator();
+                while(itr2.hasNext())
+                        System.out.println(itr2.next());
         }
 
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
