@@ -1,10 +1,13 @@
 package my_package;
 import java.util.Vector;
 
+//questa classe si occupa della generazione del codice
+//javaCC a partire dall'albero sintattico
 public class GenJavaCCCode {
 	
 	private Vector<String> code;
 	
+	//metodo pubblico per la generazione del codice
 	public Vector<String> genCode(Btree tree){
 		
 		code=new Vector<String>();
@@ -14,6 +17,7 @@ public class GenJavaCCCode {
 		return code;
 	}
 	
+	//metodo privato, ricorsivo, per la generazione del codice
 	private void genCode(Node node){
 		
 		if(node!=null){
@@ -121,6 +125,7 @@ public class GenJavaCCCode {
 					//void testa_regola():
 					//{}
 					//{
+					//LOOKAHEAD(n)
 					code.addElement("void " + node.getSon().getBrother().getVal().replace("<", "").replace(">", "") + "():");
 					code.addElement("{}");
 					code.addElement("{");
