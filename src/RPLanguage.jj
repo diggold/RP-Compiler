@@ -6,13 +6,35 @@ options
 
 PARSER_BEGIN(RPLanguage)
 import java.io.*;
+import java.util.*;
+import my_package.*;
 
 public class RPLanguage
 {
 	public static void main(String args []) throws ParseException, FileNotFoundException
   	{
     	RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole1.txt")));
-    	parser.start();
+    	Node root=parser.start();
+
+    	Btree tree=new Btree(root);
+    	Visitor visitor=new Visitor();
+
+		System.out.println("\nPRE-ORDER VISIT:\n");
+    	Vector <Node> nodeList = visitor.preorderVisit(tree);
+		int i;
+    	for(i=0; i<nodeList.size(); i++)
+    		System.out.println((nodeList.elementAt(i)).getVal()+"\n");
+		
+    	System.out.println("\nPOST-ORDER VISIT:\n");
+    	nodeList = visitor.postorderVisit(tree);
+    	for(i=0; i<nodeList.size(); i++)
+    		System.out.println((nodeList.elementAt(i)).getVal()+"\n");
+
+		System.out.println("\nJavaCC code:\n");
+    	GenJavaCCCode generator = new GenJavaCCCode();
+    	Vector<String> code=generator.genCode(tree);
+    	for(i=0; i<code.size(); i++)
+    		System.out.println(code.elementAt(i));
   	}
 }
 PARSER_END(RPLanguage)
@@ -86,78 +108,150 @@ TOKEN:
 }
 
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
-void start() :
-{}
+Node start() :
+{Node start_nptr, grammatica_nptr;}
 {
-  { System.out.println("<start> ::= <grammatica>;");} grammatica() <EOF>
+  { System.out.println("<start> ::= <grammatica>;");}
+  grammatica_nptr=grammatica() <EOF>
+  {
+    start_nptr=grammatica_nptr;
+    return start_nptr;  }
 }
 
 //<grammatica> ::= <regole>;
-void grammatica():
-{}
+Node grammatica():
+{Node grammatica_nptr, regole_nptr;}
 {
-  {System.out.println("<grammatica> ::= <regole>;");} regole()
+  {System.out.println("<grammatica> ::= <regole>;");}
+  regole_nptr=regole()
+  {
+    grammatica_nptr=regole_nptr;
+    return grammatica_nptr;  }
 }
 
 //<regole> ::= <regola> <regola_queue>;
-//<regola_queue> ::= <regola> <regole> | eps;
-void regole():
-{}
+Node regole():
+{Node regole_nptr, regola_nptr, regola_queue_nptr;}
 {
-  {System.out.println("<regole> ::= <regola> <regola_queue>;");} regola() regola_queue()
+  {System.out.println("<regole> ::= <regola> <regola_queue>;");}
+  regola_nptr=regola() regola_queue_nptr=regola_queue(regola_nptr)
+  {
+    regole_nptr=regola_queue_nptr;
+    return regole_nptr;  }
 }
 
-void regola_queue():
-{}
+//<regola_queue> ::= <regole> | eps;
+Node regola_queue(Node regola_nptr_inherited):
+{Node regola_queue_nptr, regole_nptr;}
 {
-  {System.out.println("<regola_queue> ::= <regole>;");} regole()
-| {System.out.println("<regola_queue> ::= eps;");} {}
+  {System.out.println("<regola_queue> ::= <regole>;");}
+  regole_nptr=regole()
+  {
+   regola_queue_nptr=new Node(Symbol.REGOLE, "regole", regola_nptr_inherited, regole_nptr);
+   return regola_queue_nptr;   }
+  
+| {System.out.println("<regola_queue> ::= eps;");}
+  {/*EPSILON*/}
+  {
+    regola_queue_nptr=regola_nptr_inherited;
+    return regola_queue_nptr;  }
 }
 
 //<regola> ::= [OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE <corpo> PV;
-void regola():
-{}
+Node regola():
+{Node regola_nptr, corpo_nptr;
+ Token OP_LOOKAHEAD_t, NUM_LOOKAHEAD_t, NON_TERM_t;}
 {
-  {System.out.println("<regola> ::= OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");} <OP_LOOKAHEAD> <PARAPERTA_T> <NUM_LOOKAHEAD> <PARCHIUSA_T> <NON_TERM> <PUO_ESSERE> corpo() <PV>
-| {System.out.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");} <NON_TERM> <PUO_ESSERE> corpo() <PV>
+  {System.out.println("<regola> ::= OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");}
+  OP_LOOKAHEAD_t=<OP_LOOKAHEAD> <PARAPERTA_T> NUM_LOOKAHEAD_t=<NUM_LOOKAHEAD> <PARCHIUSA_T> NON_TERM_t=<NON_TERM> <PUO_ESSERE> corpo_nptr=corpo() <PV>
+  {
+    regola_nptr=new Node(Symbol.REGOLA_LLK, "regola_llk", new Node(Symbol.NUM_LOOKAHEAD, NUM_LOOKAHEAD_t.image), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
+    return regola_nptr;  }
+  
+| {System.out.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");}
+  NON_TERM_t=<NON_TERM> <PUO_ESSERE> corpo_nptr=corpo() <PV>
+  {
+    regola_nptr=new Node(Symbol.REGOLA_LL1, "regola_ll1", new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
+    return regola_nptr;  }
 }
 
 //<corpo> ::= <elementi> <elementi_queue>;
-//<elementi_queue> ::= PIPE <corpo> | eps;
-void corpo():
-{}
+Node corpo():
+{Node corpo_nptr, elementi_nptr, elementi_queue_nptr;}
 {
-  {System.out.println("<corpo> ::=  <elementi> <elementi_queue>;");} elementi() elementi_queue()
+  {System.out.println("<corpo> ::=  <elementi> <elementi_queue>;");}
+  elementi_nptr=elementi() elementi_queue_nptr=elementi_queue(elementi_nptr)
+  {
+    elementi_nptr=elementi_queue_nptr;
+    return elementi_nptr;  }
 }
 
-void elementi_queue():
-{}
+//<elementi_queue> ::= PIPE <corpo> | eps;
+Node elementi_queue(Node elementi_nptr_inherited):
+{Node elementi_queue_nptr, corpo_nptr;}
 {
-  {System.out.println("<elementi_queue> ::=  PIPE <corpo>;");} <PIPE> corpo()
-| {System.out.println("<elementi_queue> ::= eps;");} {}
+  {System.out.println("<elementi_queue> ::=  PIPE <corpo>;");}
+  <PIPE> corpo_nptr=corpo()
+  {
+    elementi_queue_nptr=new Node(Symbol.OPPURE, "oppure", elementi_nptr_inherited, corpo_nptr);
+    return elementi_queue_nptr;  }
+| {System.out.println("<elementi_queue> ::= eps;");}
+  {/*EPSILON*/}
+  {
+    elementi_queue_nptr=elementi_nptr_inherited;
+    return elementi_queue_nptr;  }
 }
 
 //<elementi> ::= <elemento> <elemento_queue>;
-//<elemento_queue> ::= <elementi> | eps;
-void elementi():
-{}
+Node elementi():
+{Node elementi_nptr, elemento_nptr, elemento_queue_nptr;}
 {
-  {System.out.println("<elementi> ::=  <elemento> <elemento_queue>;");} elemento() elemento_queue()
+  {System.out.println("<elementi> ::=  <elemento> <elemento_queue>;");}
+  elemento_nptr=elemento() elemento_queue_nptr=elemento_queue(elemento_nptr)
+  {
+    elementi_nptr=elemento_queue_nptr;
+    return elementi_nptr;  }
 }
 
-void elemento_queue():
-{}
+//<elemento_queue> ::= <elementi> | eps;
+Node elemento_queue(Node elemento_nptr_inherited):
+{Node elemento_queue_nptr, elementi_nptr;}
 {
-  {System.out.println("<elemento_queue> ::= <elementi>;");} elementi()
-| {System.out.println("<elemento_queue> ::=  eps;");} {}
+  {System.out.println("<elemento_queue> ::= <elementi>;");}
+  elementi_nptr=elementi()
+  {
+    elemento_queue_nptr=new Node(Symbol.CONCAT, "concat", elemento_nptr_inherited, elementi_nptr);
+    return elemento_queue_nptr;  }
+| {System.out.println("<elemento_queue> ::=  eps;");}
+  {/*EPSILON*/}
+  {
+    elemento_queue_nptr=elemento_nptr_inherited;
+    return elemento_queue_nptr;  }
 }
 
 //<elemento> ::= TERM | NON_TERM | eps | PARAPERTA_Q <elementi> PARCHIUSA_Q;
-void elemento():
-{}
+Node elemento():
+{Node elemento_nptr, elementi_nptr;
+ Token TERM_t, NON_TERM_t, EPS_t;}
 {
-  {System.out.println("<elemento> ::=  TERM;");} <TERM>
-| {System.out.println("<elemento> ::=  NON_TERM;");} <NON_TERM>
-| {System.out.println("<elemento> ::=  EPS;");} <EPS>
-| {System.out.println("<elemento> ::= PARAPERTA_Q <elementi> PARCHIUSA_Q;");} <PARAPERTA_Q> elementi() <PARCHIUSA_Q>
+  {System.out.println("<elemento> ::=  TERM;");}
+  TERM_t=<TERM>
+  {
+    elemento_nptr=new Node(Symbol.TERM, TERM_t.image);
+    return elemento_nptr;  }
+| {System.out.println("<elemento> ::=  NON_TERM;");}
+  NON_TERM_t=<NON_TERM>
+  {
+    elemento_nptr=new Node(Symbol.NON_TERM, NON_TERM_t.image);
+    return elemento_nptr;  }
+| {System.out.println("<elemento> ::=  EPS;");}
+  EPS_t=<EPS>
+  {
+    elemento_nptr=new Node(Symbol.EPS, EPS_t.image);
+    return elemento_nptr;  }
+| {System.out.println("<elemento> ::= PARAPERTA_Q <elementi> PARCHIUSA_Q;");}
+  <PARAPERTA_Q> elementi_nptr=elementi() <PARCHIUSA_Q>
+  {
+    elemento_nptr=new Node(Symbol.OPZ, "?", elementi_nptr);
+    return elemento_nptr;  }
 }

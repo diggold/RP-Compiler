@@ -5,11 +5,4 @@
 /SimpleCharStream.java
 /Token.java
 /TokenMgrError.java
-/ParseException.class
-/RPLanguage.class
-/RPLanguageConstants.class
-/RPLanguageTokenManager.class
-/SimpleCharStream.class
-/Token.class
-/TokenMgrError.class
-/LexerTest.class
+/my_package
