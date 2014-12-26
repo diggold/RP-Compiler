@@ -75,7 +75,7 @@ public class Node {
 		this.val=val;
 	}
 	
-	public void setsymbol(Symbol symbol){
+	public void setSymbol(Symbol symbol){
 		
 		this.symbol=symbol;
 	}

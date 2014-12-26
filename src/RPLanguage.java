@@ -4,9 +4,11 @@ import java.util.*;
 import my_package.*;
 
 public class RPLanguage implements RPLanguageConstants {
+        private STable table=new STable();
+
         public static void main(String args []) throws ParseException, FileNotFoundException
         {
-        RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole1.txt")));
+        RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole2.txt")));
 
                 //parsing e costruzione dell'albero sintattico
                 Node root=parser.start();
@@ -64,8 +66,29 @@ public class RPLanguage implements RPLanguageConstants {
     case NON_TERM:
    System.out.println("<regola_queue> ::= <regole>;");
       regole_nptr = regole();
-   regola_queue_nptr=new Node(Symbol.REGOLE, "regole", regola_nptr_inherited, regole_nptr);
-   {if (true) return regola_queue_nptr;}
+    //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
+    //se la "gestione della regola" non ha comportato modifiche
+    //all'albero sintattico allra ci porocede normalmente
+    if(regola_nptr_inherited!=null)
+                regola_queue_nptr=new Node(Symbol.REGOLE, "regole", regola_nptr_inherited, regole_nptr);/*conservare questa riga se si vuole eliminare
+   																								  la "gestione della regola"*/
+        //altrimenti
+        else
+                //se la "gestione della regola" ha cancellato il nodo di una regola
+                //ma non il nodo delle regole successive allora le regole successive
+                //vengono sostituite alla regola eliminata.
+                if(regole_nptr!=null)
+                        regola_queue_nptr=new Node(Symbol.REGOLE, "regole", regole_nptr);
+
+                //se la "gestione della regola" ha cancellato il nodo di una regola
+                //e anche quello delle regole successive, allora l'insieme delle regole
+                //si annulla.
+                else
+                        regola_queue_nptr=null;
+
+        {if (true) return regola_queue_nptr;}/*conservare questa riga se si vuole eliminare la "gestione della regola"*/
+        //-------------------------------------------------------------------------------------------------------/GESTIONE REGOLA
+
       break;
     default:
       jj_la1[0] = jj_gen;
@@ -93,7 +116,68 @@ public class RPLanguage implements RPLanguageConstants {
       corpo_nptr = corpo();
       jj_consume_token(PV);
     regola_nptr=new Node(Symbol.REGOLA_LLK, "regola_llk", new Node(Symbol.NUM_LOOKAHEAD, NUM_LOOKAHEAD_t.image), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
-    {if (true) return regola_nptr;}
+
+        //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
+        //se la regola non è presente in tabella
+        //allora la si inserisce e il parsing non subisce alterazioni
+        if(!table.contains(NON_TERM_t.image))
+                table.put(NON_TERM_t.image, corpo_nptr);
+        //se la regola è già presente allora il suo corpo lo si sposta
+        //nel corpo della regola già definita
+        else{
+                //preleviamo il corpo della regola già presente nella tabella
+                Node corpo=table.get(NON_TERM_t.image);
+
+                //se la regola prelevata dall tabella ha un corpo
+                //formato da un solo simbolo terminale o non terminale
+                //allora il corpo della regola già definita viene
+                //modificato in un corpo contenente una "pipe" di elementi.
+                if(corpo.getSon()==null){
+
+                        //aggiungiamo, in pipe, il corpo della regola corrente
+                        //alla regola già definita
+                        String val=corpo.getVal();
+                        Symbol sym=corpo.getSymbol();
+                        corpo.setVal("oppure");
+                        corpo.setSymbol(Symbol.OPPURE);
+                        corpo.setSon(new Node(sym, val));
+                        corpo.getSon().setBrother(corpo_nptr);
+                }
+                //altrimenti
+                else
+
+                        //se la regola prelevata dalla tabella ha un corpo
+                        //formato da "pipe" di terminali e non terminali
+                        if(corpo.getSon().getBrother()!=null){
+
+                                //puntiamo all'ultimo insieme di elementi in "pipe"
+                                while(corpo.getSon().getBrother().getVal()=="oppure")
+                                        corpo=corpo.getSon().getBrother();
+
+                                //aggiungiamo il corpo della regola corrente alla
+                                //"pipe" (corpo) della regola già definita
+                                Node elementi=corpo.getSon().getBrother();
+                                corpo.getSon().setBrother(new Node(Symbol.OPPURE, "oppure", elementi, corpo_nptr));
+                        }
+                        //se la regola prelevata dall tabella ha un corpo
+                        //formato da una sola concatenazione di simboli terminali e non
+                        //terminali, allora il corpo della regola già definita viene
+                        //modificato in un corpo contenente una "pipe" di elementi.
+                        else
+                        {
+                          //aggiungiamo, in pipe, il corpo della regola corrente
+                          //alla regola già definita
+                          Node elementi=corpo.getSon();
+                          corpo.setVal("oppure");
+                          corpo.setSymbol(Symbol.OPPURE);
+                          corpo.setSon(elementi);
+                          corpo.setBrother(corpo_nptr);
+                        }
+                regola_nptr=null;
+        }
+        //-------------------------------------------------------------------------------------------------------/GESTIONE REGOLA
+    {if (true) return regola_nptr;}/*conservare questa riga se si vuole eliminare la "gestione della regola"*/
+
       break;
     case NON_TERM:
    System.out.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");
@@ -102,7 +186,68 @@ public class RPLanguage implements RPLanguageConstants {
       corpo_nptr = corpo();
       jj_consume_token(PV);
     regola_nptr=new Node(Symbol.REGOLA_LL1, "regola_ll1", new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
-    {if (true) return regola_nptr;}
+
+    //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
+        //se la regola non è presente in tabella
+        //allora la si inserisce e il parsing non subisce alterazioni
+        if(!table.contains(NON_TERM_t.image))
+                table.put(NON_TERM_t.image, corpo_nptr);
+        //se la regola è già presente allora il suo corpo lo si sposta
+        //nel corpo della regola già definita
+        else{
+          //preleviamo il corpo della regola già presente nella tabella
+                Node corpo=table.get(NON_TERM_t.image);
+
+                //se la regola prelevata dall tabella ha un corpo
+                //formato da un solo simbolo terminale o non terminale
+                //allora il corpo della regola già definita viene
+                //modificato in un corpo contenente una "pipe" di elementi.
+                if(corpo.getSon()==null){
+
+                        //aggiungiamo, in pipe, il corpo della regola corrente
+                        //alla regola già definita
+                        String val=corpo.getVal();
+                        Symbol sym=corpo.getSymbol();
+                        corpo.setVal("oppure");
+                        corpo.setSymbol(Symbol.OPPURE);
+                        corpo.setSon(new Node(sym, val));
+                        corpo.getSon().setBrother(corpo_nptr);
+                }
+                //altrimenti
+                else
+
+                        //se la regola prelevata dalla tabella ha un corpo
+                        //formato da "pipe" di terminali e non terminali
+                        if(corpo.getSon().getBrother()!=null){
+
+                                //puntiamo all'ultimo insieme di elementi in "pipe"
+                                while(corpo.getSon().getBrother().getVal()=="oppure")
+                                        corpo=corpo.getSon().getBrother();
+
+                                //aggiungiamo il corpo della regola corrente alla
+                                //"pipe" (corpo) della regola già definita
+                                Node elementi=corpo.getSon().getBrother();
+                                corpo.getSon().setBrother(new Node(Symbol.OPPURE, "oppure", elementi, corpo_nptr));
+                        }
+                        //se la regola prelevata dall tabella ha un corpo
+                        //formato da una sola concatenazione di simboli terminali e non
+                        //terminali, allora il corpo della regola già definita viene
+                        //modificato in un corpo contenente una "pipe" di elementi.
+                        else
+                        {
+                          //aggiungiamo, in pipe, il corpo della regola corrente
+                          //alla regola già definita
+                          Node elementi=corpo.getSon();
+                          corpo.setVal("oppure");
+                          corpo.setSymbol(Symbol.OPPURE);
+                          corpo.setSon(elementi);
+                          corpo.setBrother(corpo_nptr);
+                        }
+          regola_nptr=null;
+        }
+        //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
+    {if (true) return regola_nptr;}/*conservare questa riga se si vuole eliminare la "gestione della regola"*/
+
       break;
     default:
       jj_la1[1] = jj_gen;
