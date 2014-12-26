@@ -15,7 +15,7 @@ public class RPLanguage
   	
 	public static void main(String args []) throws ParseException, FileNotFoundException
   	{
-    	RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole2.txt")));
+    	RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole3.txt")));
 
 		//parsing e costruzione dell'albero sintattico
 		Node root=parser.start();

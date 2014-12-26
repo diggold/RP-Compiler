@@ -179,7 +179,7 @@ public class RPLanguage implements RPLanguageConstants {
                 //della regola corrente
                 if(table.get(NON_TERM_t.image).getLookaheadNumber() <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
                         table.get(NON_TERM_t.image).getRegola().getSon().setVal(NUM_LOOKAHEAD_t.image);
-
+                //il link alla regola corrente viene annullato
                 regola_nptr=null;
         }
         //-------------------------------------------------------------------------------------------------------/GESTIONE REGOLA
@@ -250,7 +250,7 @@ public class RPLanguage implements RPLanguageConstants {
                           corpo.setSon(elementi);
                           corpo.setBrother(corpo_nptr);
                         }
-
+                //il link alla regola corrente viene annullato	
                 regola_nptr=null;
         }
         //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA

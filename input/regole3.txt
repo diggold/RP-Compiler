@@ -1,0 +1,11 @@
+/*-----------------------------------------------------PROGRAM*/
+lookahead(3)<program> ::= <stms>;
+
+<stms> ::= <stm>;
+<stms> ::= [<stm>]PUNTOEVIRGOLA<stms>;
+<stms> ::= eps;
+
+<stm> ::= <io_stm>;
+<stm> ::= <assign>;
+<stm> ::= <if>;
+<stm> ::= <loop>;
