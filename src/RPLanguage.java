@@ -115,18 +115,18 @@ public class RPLanguage implements RPLanguageConstants {
       jj_consume_token(PUO_ESSERE);
       corpo_nptr = corpo();
       jj_consume_token(PV);
-    regola_nptr=new Node(Symbol.REGOLA_LLK, "regola_llk", new Node(Symbol.NUM_LOOKAHEAD, NUM_LOOKAHEAD_t.image), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
+    regola_nptr=new Node(Symbol.REGOLA, "regola", new Node(Symbol.NUM_LOOKAHEAD, NUM_LOOKAHEAD_t.image), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
 
         //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
         if(!table.contains(NON_TERM_t.image))
-                table.put(NON_TERM_t.image, corpo_nptr);
+                table.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, Integer.parseInt(NUM_LOOKAHEAD_t.image)));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
                 //preleviamo il corpo della regola già presente nella tabella
-                Node corpo=table.get(NON_TERM_t.image);
+                Node corpo=table.get(NON_TERM_t.image).getCorpoRegola();
 
                 //se la regola prelevata dall tabella ha un corpo
                 //formato da un solo simbolo terminale o non terminale
@@ -173,6 +173,13 @@ public class RPLanguage implements RPLanguageConstants {
                           corpo.setSon(elementi);
                           corpo.setBrother(corpo_nptr);
                         }
+
+                //se il numero di simboli di lookahead della regola corrente è maggioredel numero di simboli di lookahead
+                //della regola di destinazione allora la regola di destinazione assume il numer di simboli di lookahead
+                //della regola corrente
+                if(table.get(NON_TERM_t.image).getLookaheadNumber() <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
+                        table.get(NON_TERM_t.image).getRegola().getSon().setVal(NUM_LOOKAHEAD_t.image);
+
                 regola_nptr=null;
         }
         //-------------------------------------------------------------------------------------------------------/GESTIONE REGOLA
@@ -185,18 +192,18 @@ public class RPLanguage implements RPLanguageConstants {
       jj_consume_token(PUO_ESSERE);
       corpo_nptr = corpo();
       jj_consume_token(PV);
-    regola_nptr=new Node(Symbol.REGOLA_LL1, "regola_ll1", new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
+    regola_nptr=new Node(Symbol.REGOLA, "regola", new Node(Symbol.NUM_LOOKAHEAD, "1"), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
 
     //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
         if(!table.contains(NON_TERM_t.image))
-                table.put(NON_TERM_t.image, corpo_nptr);
+                table.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, 1));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
           //preleviamo il corpo della regola già presente nella tabella
-                Node corpo=table.get(NON_TERM_t.image);
+                Node corpo=table.get(NON_TERM_t.image).getCorpoRegola();
 
                 //se la regola prelevata dall tabella ha un corpo
                 //formato da un solo simbolo terminale o non terminale
@@ -243,7 +250,8 @@ public class RPLanguage implements RPLanguageConstants {
                           corpo.setSon(elementi);
                           corpo.setBrother(corpo_nptr);
                         }
-          regola_nptr=null;
+
+                regola_nptr=null;
         }
         //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
     {if (true) return regola_nptr;}/*conservare questa riga se si vuole eliminare la "gestione della regola"*/

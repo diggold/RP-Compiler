@@ -104,23 +104,8 @@ public class GenJavaCCCode {
 					
 					break;
 				}
-					
-				case REGOLA_LL1:{
-					
-					//void testa_regola():
-					//{}
-					//{
-					code.add("void " + node.getSon().getVal().replace("<", "").replace(">", "") + "():");
-					code.add("{}");
-					code.add("{");
-					//...corpo della regola...
-					this.genCode(node.getSon().getBrother());
-					//}
-					code.add("}");
-					break;
-				}
 				
-				case REGOLA_LLK:{
+				case REGOLA:{
 					
 					//void testa_regola():
 					//{}

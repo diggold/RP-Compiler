@@ -5,19 +5,19 @@ import java.util.Iterator;
 
 public class STable {
 	
-	private HashMap<String, Node> table;
+	private HashMap<String, Info> table;
 	
 	public STable(){
 		
-		table=new HashMap<String, Node>();
+		table=new HashMap<String, Info>();
 	}
 	
-	public void put(String key, Node value){
+	public void put(String key, Info value){
 		
 		table.put(key, value);
 	}
 	
-	public Node get(String key){
+	public Info get(String key){
 		
 		return table.get(key);
 	}
@@ -34,7 +34,7 @@ public class STable {
 		Iterator<String> i=table.keySet().iterator();
 				
 		String key; 
-		Node value;
+		Info value;
 		while(i.hasNext()){
 			key=i.next(); 
 			value=table.get(key);

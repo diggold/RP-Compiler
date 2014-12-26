@@ -5,8 +5,7 @@ package my_package;
 //la traduzione verso il linguaggio target.
 public enum Symbol {
 	REGOLE,
-	REGOLA_LLK,
-	REGOLA_LL1,
+	REGOLA,
 	OPPURE,
 	CONCAT,
 	NUM_LOOKAHEAD,
