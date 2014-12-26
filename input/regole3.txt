@@ -1,5 +1,5 @@
 /*-----------------------------------------------------PROGRAM*/
-lookahead(3)<program> ::= <stms>;
+<program> ::= <stms>;
 
 <stms> ::= <stm>;
 <stms> ::= [<stm>]PUNTOEVIRGOLA<stms>;

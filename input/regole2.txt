@@ -1,4 +1,7 @@
 /*-----------------------------------------------------PROGRAM*/
-lookahead(3)<program> ::= <stms>;
-<stms> ::= <stm> | [<stm>] PUNTOEVIRGOLA <stms> | eps;
+<program> ::= <stms>;
+//lookahead(3)<stms> ::= <stm> | [<stm>] PUNTOEVIRGOLA <stms> | eps;
 <stm> ::= <io_stm> | <assign> | <if> | <loop>;
+//lookahead(4)<stms> ::= <test>|TEST<test>;
+<stm>::=eps;
+//lookahead(2)<program>::= <stms><program>|TEST<stms>;

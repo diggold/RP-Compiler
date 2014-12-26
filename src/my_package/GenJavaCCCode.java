@@ -114,7 +114,8 @@ public class GenJavaCCCode {
 					code.add("void " + node.getSon().getBrother().getVal().replace("<", "").replace(">", "") + "():");
 					code.add("{}");
 					code.add("{");
-					code.add("LOOKAHEAD(" + node.getSon().getVal() +")\n");
+					if(node.getSon().getVal()!="1")
+						code.add("LOOKAHEAD(" + node.getSon().getVal() +")\n");
 					//...corpo della regola...
 					this.genCode(node.getSon().getBrother().getBrother());
 					//}
