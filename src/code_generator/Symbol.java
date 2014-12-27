@@ -1,4 +1,4 @@
-package my_package;
+package code_generator;
 
 //enumerazione dei simboli necessari
 //al generatore di codice per eseguire

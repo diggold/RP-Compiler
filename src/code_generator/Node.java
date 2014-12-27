@@ -1,4 +1,4 @@
-package my_package;
+package code_generator;
 /**
  * Classe nodo:
  * è il nodo di un albero Ennario

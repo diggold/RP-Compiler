@@ -1,4 +1,4 @@
-package my_package;
+package code_generator;
 
 public class Btree {
 	
