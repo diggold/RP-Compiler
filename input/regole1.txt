@@ -32,4 +32,4 @@ lookahead(5)
 <fatt_b> ::= <alg_expr> OPCONFRONTO <alg_expr> 
 			|[NOT]PARAPERTA <bool_expr> PARCHIUSA 
 			|<alg_expr>
-			|epsilon;
+			|eps;
