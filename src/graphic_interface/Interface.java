@@ -1,22 +1,20 @@
 package graphic_interface;
-import java.awt.Dimension;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
-import javafx.stage.FileChooser;
-
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
-import javax.print.attribute.AttributeSet;
 
 import java.awt.Color;
 
@@ -29,96 +27,107 @@ public class Interface{
 	private JFileChooser fileChooser;
 	private JTextField textFile;
 	private static JTextArea display;
-//	private JTextField textPackageName;
-//	private JCheckBox chBoxDisassReass;
-//	private JCheckBox chBoxChanPack;
-//	private JCheckBox chDataEncoding;
-//	private JCheckBox chBoxInsJunk;
-//	private JCheckBox chBoxRepacking;
 	
 	public Interface(){
 		
-//---------------------------------------------------------------------------elementi di interfaccia
+		
+		
+		//---------------------------------------------------------------------------elementi di interfaccia
 		//creazione frame
 		int frameWidth=1000;
 		int frameHeight=700;
 		this.frame=new JFrame("finestra");
 		this.frame.setLayout(null);
 		this.frame.setBounds(0,0,frameWidth,frameHeight);
-		this.frame.setResizable(false);
+		this.frame.setResizable(true);
+		JPanel framePanel=new JPanel();
+		frame.setContentPane(framePanel);
+		
 		
 		//display
-		int displayX=this.frame.getX();
-		int displayY=this.frame.getY()+40;
-		int displayWidth=frameWidth;
-		int displayHeigh=frameHeight-150;
-		this.display=new JTextArea();
-		this.display.setVisible(true);
-		this.display.setBackground(new Color(0,0,0));
-		this.display.setForeground(new Color(255,255,255));
-		this.display.setFont(new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, 16));
-		JScrollPane sp=new JScrollPane(this.display);
-		sp.setBounds(displayX,displayY,displayWidth-6,displayHeigh);
-		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		sp.setVisible(true);
-		
-		
+		display=new JTextArea();
+		display.setVisible(true);
+		display.setBackground(new Color(0,0,0));
+		display.setForeground(new Color(255,255,255));
+		display.setFont(new Font(Font.DIALOG_INPUT, Font.CENTER_BASELINE, 16));
+		JScrollPane displayScrollPanel=new JScrollPane(display);
+		displayScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		displayScrollPanel.setVisible(true);
 		
 		//creazione bottone start
-		int buttonStartWidth=80;
-		int buttonStartHeight=30;
 		this.startButton=new JButton();
-		this.startButton.setBounds((frameWidth/2)-buttonStartWidth/2,frameHeight-buttonStartHeight*5/2,buttonStartWidth,buttonStartHeight);
 		this.startButton.setText("Start");
 		this.startButton.setVisible(true);
 		this.startButton.setEnabled(false);
 		
 		//creazione FileChooser
-		int fileChooserWidth=100;
-		int fileChooserHeight=50;
 		this.fileChooser=new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(".rp", "rp");
 		this.fileChooser.setFileFilter(filter);
-		this.fileChooser.setBounds(0, 0, fileChooserWidth, fileChooserHeight);
 		this.fileChooser.setVisible(true);
 
 		//creazione bottone addFile
-		int buttonAddApkWidth=80;
-		int buttonAddApkHeight=30;
 		this.addFileButton=new JButton();
-		this.addFileButton.setBounds(this.frame.getX(),this.frame.getY(),buttonAddApkWidth,buttonAddApkHeight);
 		this.addFileButton.setText("add file");
 		this.addFileButton.setVisible(true);
 		
 		//creazione textField file path
-		int textFileWidth=frameWidth-buttonAddApkWidth-7;
-		int textFileHeight=30;
 		this.textFile=new JTextField("...");
 		this.textFile.setHorizontalAlignment(JTextField.CENTER );
-		this.textFile.setBounds(this.frame.getX()+buttonAddApkWidth+1, this.frame.getY(), textFileWidth, textFileHeight);
 		this.textFile.setVisible(true);
 		this.textFile.setEditable(false);
 		this.textFile.setBackground(new Color(255,255,255));
 		
+		//--------------------------------------------------------------------------------------------------------layout
+		GridBagLayout gbl=new GridBagLayout();
+		framePanel.setLayout(gbl);
+		//framePanel.setBackground(Color.RED);
+		framePanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		GridBagConstraints c=new GridBagConstraints();
 		
-//---------------------------------------------------------------------inserimento elementi nel frame principale		
+		//---------------------------------------------------------------------inserimento elementi nel frame principale		
 		
 		//aggiunta elementi al frame
-		this.frame.add(this.addFileButton);
-		this.frame.add(this.startButton);
-		this.frame.add(this.textFile);
-		this.frame.getContentPane().add(sp);
-		this.frame.setVisible(true);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		//c.weighty=0.05;
+		//c.weightx=0.05;
+		c.gridx=0;
+		c.gridy=0;
+		framePanel.add(addFileButton, c);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		//c.weighty=0.05;
+		//c.weightx=1;
+		c.gridx=1;
+		c.gridy=0;
+		framePanel.add(textFile, c);
+		
+		c.fill = GridBagConstraints.BOTH;
+		c.weighty=1;
+		c.weightx=1;
+		c.gridwidth=2;
+		c.gridx=0;
+		c.gridy=1;
+		framePanel.add(displayScrollPanel, c);
+		
+		c.fill = GridBagConstraints.CENTER;
+		c.weighty=0.05;
+		c.weightx=1;
+		c.gridx=0;
+		c.gridy=2;
+		framePanel.add(startButton, c);
+		
+		//frame.pack();
+		frame.setVisible(true);
 		
 		
-		
-//--------------------------------------------------------------------------------------------------------eventi
+		//--------------------------------------------------------------------------------------------------------eventi
 		
 		//evento pressione bottone addFile
 		ActionListener listenerAddApkButton=new GestorePulsanteAddFile(this.fileChooser, this.frame, this.textFile, this.startButton);
 		this.addFileButton.addActionListener(listenerAddApkButton);
 		
-		this.startButton.addActionListener(new GestorePulsanteStart(this.textFile, this.display));
+		this.startButton.addActionListener(new GestorePulsanteStart(this.textFile, display));
 		
 		//evento di chiusura frame
 		this.frame.addWindowListener(new java.awt.event.WindowAdapter() 
@@ -130,6 +139,7 @@ public class Interface{
 		});
 	}
 	
+	//metodo esportato per scrivere sul display del frame
 	public static void println(String line){
 		display.append(line+"\n");
 	};

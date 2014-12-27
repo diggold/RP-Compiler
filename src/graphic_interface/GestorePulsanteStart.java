@@ -1,32 +1,19 @@
 package graphic_interface;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Iterator;
-import java.util.Scanner;
-
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import code_generator.Btree;
 import code_generator.GenJavaCCCode;
 import code_generator.JavaCCCode;
 import code_generator.Node;
-import code_generator.Visitor;
 import compiler.ParseException;
 import compiler.RPLanguage;
-
 
 public class GestorePulsanteStart implements ActionListener{
 
