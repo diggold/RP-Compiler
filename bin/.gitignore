@@ -5,4 +5,5 @@
 /SimpleCharStream.java
 /Token.java
 /TokenMgrError.java
-/code_generator
+/graphic_interface
+/compiler
