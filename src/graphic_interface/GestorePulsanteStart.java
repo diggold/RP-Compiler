@@ -70,8 +70,7 @@ public class GestorePulsanteStart implements ActionListener{
 			
 			this.display.append("\n\nè stato generato il file di output: "+outputFile.getPath()+"\n");
 			this.clearButton.setEnabled(true);
-			pr.close();
-			
+			pr.close();			
 		} catch (ParseException | FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
