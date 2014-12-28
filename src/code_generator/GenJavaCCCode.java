@@ -59,9 +59,9 @@ public class GenJavaCCCode {
 						
 						code.removeLastLexerLine();
 						if(code.lexerLines()==1)
-							code.addLexerLine("<"+node.getVal()+":\t>");
+							code.addLexerLine("<"+node.getVal()+": >");
 						else
-							code.addLexerLine("|<"+node.getVal()+":\t>");
+							code.addLexerLine("|<"+node.getVal()+": >");
 						code.addLexerLine("}");
 					}
 					

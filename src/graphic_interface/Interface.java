@@ -1,9 +1,11 @@
 package graphic_interface;
 import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
@@ -16,6 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.sun.xml.internal.ws.api.pipe.Fiber.Listener;
+
 import java.awt.Color;
 
 
@@ -23,6 +27,7 @@ public class Interface{
 	
 	private JFrame frame;
 	private JButton startButton;
+	private JButton clearButton;
 	private JButton addFileButton;
 	private JFileChooser fileChooser;
 	private JTextField textFile;
@@ -34,8 +39,8 @@ public class Interface{
 		
 		//---------------------------------------------------------------------------elementi di interfaccia
 		//creazione frame
-		int frameWidth=1000;
-		int frameHeight=700;
+		int frameWidth=600;
+		int frameHeight=500;
 		this.frame=new JFrame("finestra");
 		this.frame.setLayout(null);
 		this.frame.setBounds(0,0,frameWidth,frameHeight);
@@ -60,6 +65,12 @@ public class Interface{
 		this.startButton.setVisible(true);
 		this.startButton.setEnabled(false);
 		
+		//creazione bottone clear
+		this.clearButton=new JButton();
+		this.clearButton.setText("Clear");
+		this.clearButton.setVisible(true);
+		this.clearButton.setEnabled(false);
+		
 		//creazione FileChooser
 		this.fileChooser=new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(".rp", "rp");
@@ -81,9 +92,13 @@ public class Interface{
 		//--------------------------------------------------------------------------------------------------------layout
 		GridBagLayout gbl=new GridBagLayout();
 		framePanel.setLayout(gbl);
-		//framePanel.setBackground(Color.RED);
 		framePanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagConstraints c=new GridBagConstraints();
+		
+		JPanel panel=new JPanel();
+		panel.setLayout(new FlowLayout());
+		panel.add(startButton);
+		panel.add(clearButton);
 		
 		//---------------------------------------------------------------------inserimento elementi nel frame principale		
 		
@@ -97,7 +112,7 @@ public class Interface{
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		//c.weighty=0.05;
-		//c.weightx=1;
+		c.weightx=1;
 		c.gridx=1;
 		c.gridy=0;
 		framePanel.add(textFile, c);
@@ -115,7 +130,9 @@ public class Interface{
 		c.weightx=1;
 		c.gridx=0;
 		c.gridy=2;
-		framePanel.add(startButton, c);
+		framePanel.add(panel, c);
+		
+		
 		
 		//frame.pack();
 		frame.setVisible(true);
@@ -125,18 +142,31 @@ public class Interface{
 		
 		//evento pressione bottone addFile
 		ActionListener listenerAddApkButton=new GestorePulsanteAddFile(this.fileChooser, this.frame, this.textFile, this.startButton);
+		
 		this.addFileButton.addActionListener(listenerAddApkButton);
 		
-		this.startButton.addActionListener(new GestorePulsanteStart(this.textFile, display));
+		this.startButton.addActionListener(new GestorePulsanteStart(this.textFile, display, this.clearButton));
 		
 		//evento di chiusura frame
-		this.frame.addWindowListener(new java.awt.event.WindowAdapter() 
-		{
+		this.frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			
 				public void windowClosing(java.awt.event.WindowEvent e) 
 				{ 
 					System.exit(0);
 				}
 		});
+		
+		//evento pressione tasto clear
+		this.clearButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				display.setText("");
+				clearButton.setEnabled(false);
+			}
+		});
+		
 	}
 	
 	//metodo esportato per scrivere sul display del frame

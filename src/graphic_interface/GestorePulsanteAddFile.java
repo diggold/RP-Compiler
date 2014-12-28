@@ -8,14 +8,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-//questa classe gestisce l'evento di click sul pulsante "addApkButton"
-//della classe InterfaceEngine
 public class GestorePulsanteAddFile implements ActionListener{
 	
-	private JFileChooser j;	// sellezionatore dei file
-	private JFrame f;		// frame principale utilizzato per l'apertura del filechooser
-	private JTextField t;   // area di testo relativa al path dell'apk
-	private JButton b;		// pulsante start
+	private JFileChooser j;	
+	private JFrame f;		
+	private JTextField t;   
+	private JButton b;
 	
 	//costruttore
 	public GestorePulsanteAddFile(JFileChooser j, JFrame f, JTextField t, JButton b){
@@ -25,9 +23,6 @@ public class GestorePulsanteAddFile implements ActionListener{
 		this.b=b;
 	}
 	
-	//1.quando il pulsante addFile viene premuto si visualizza il filechooser
-	//2.l'area di associata al pulsante viene settata con il path dell'apk
-	//3.se il file selezionato termina con .apk viene sbloccato il pulsante start
 	public void actionPerformed(ActionEvent e) {
 		
 		this.j.showOpenDialog(this.f);
