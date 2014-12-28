@@ -1,0 +1,20 @@
+//grammatica
+<grammatica> ::= <regole>;
+
+//regole
+<regole> ::= <regola> <regola_queue>;
+<regola_queue> ::= <regole> | eps;
+
+//regola	
+<regola> ::=  [OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T] NON_TERM PUO_ESSERE  <corpo>  PV;
+
+//corpo
+<corpo> ::= <elementi> <elementi_queue>;
+<elementi_queue> ::= PIPE <corpo> | eps;
+
+//elementi
+<elementi> ::= <elemento> <elemento_queue>;
+<elemento_queue> ::= <elementi> | eps;
+
+//elemento
+<elemento> ::= TERM | NON_TERM | EPS | PARAPERTA_Q <elementi> PARCHIUSA_Q;
