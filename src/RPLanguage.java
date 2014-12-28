@@ -8,7 +8,9 @@ public class RPLanguage implements RPLanguageConstants {
 
         public static void main(String args []) throws ParseException, FileNotFoundException
         {
-        RPLanguage parser = new RPLanguage(new FileInputStream(new File("input/regole1.rp")));
+                File inputFile = new File("input/RPLanguage.rp");
+                PrintStream pr=new PrintStream(new FileOutputStream(new File("./output/"+inputFile.getName()+".jj")));
+        RPLanguage parser = new RPLanguage(new FileInputStream(inputFile));
 
                 //parsing e costruzione dell'albero sintattico
                 System.out.println("Parsing:\u005cn");
@@ -16,19 +18,27 @@ public class RPLanguage implements RPLanguageConstants {
                 Btree tree=new Btree(root);
                 Visitor visitor=new Visitor();
 
+
 //		//visita preorder dell'albero sinattico//		System.out.println("\nPRE-ORDER VISIT:\n");//		ArrayList <Node> nodeList = visitor.preorderVisit(tree);//		Iterator<Node> itr1=nodeList.iterator();//		while(itr1.hasNext())//    		System.out.println((itr1.next()).getVal()+"\n");////		//visita postorder dell'albero sintattico//		System.out.println("\nPOST-ORDER VISIT:\n");//		nodeList = visitor.postorderVisit(tree);//		itr1=nodeList.iterator();//		while(itr1.hasNext())//			System.out.println((itr1.next()).getVal()+"\n");
 
                 //generazione del codice per javaCC
+                String line=null;
                 System.out.println("\u005cn\u005cnJavaCC-code:\u005cn");
                 GenJavaCCCode generator = new GenJavaCCCode();
                 JavaCCCode code=generator.genCode(tree);
                 Iterator<String> itr2=code.getLexerCode().iterator();
-                while(itr2.hasNext())
-                        System.out.println(itr2.next());
+                while(itr2.hasNext()){
+                  line=itr2.next();
+                  System.out.println(line);
+                  pr.println(line);
+                }
                 System.out.println();
                 itr2=code.getParserCode().iterator();
-                while(itr2.hasNext())
-                        System.out.println(itr2.next());
+                while(itr2.hasNext()){
+                  line=itr2.next();
+                  System.out.println(line);
+                  pr.println(line);
+                }
         }
 
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
@@ -336,7 +346,7 @@ public class RPLanguage implements RPLanguageConstants {
     throw new Error("Missing return statement in function");
   }
 
-//<elemento> ::= TERM | NON_TERM | eps | PARAPERTA_Q <elementi> PARCHIUSA_Q;
+//<elemento> ::= TERM | NON_TERM | EPS | PARAPERTA_Q <elementi> PARCHIUSA_Q;
   final public Node elemento() throws ParseException {
  Node elemento_nptr, elementi_nptr;
  Token TERM_t, NON_TERM_t, EPS_t;

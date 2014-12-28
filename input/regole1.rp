@@ -1,7 +1,7 @@
 /*-----------------------------------------------------PROGRAM*/
 lookahead(3)<program> ::= <stms>;
 <stms> ::= <stm> | [<stm>] PUNTOEVIRGOLA <stms> | eps;
-<stm> ::= <io_stm> | <assign> | <if> | <loop>;
+<stm> ::= <io_stm> | <assign> | <if_stm> | <loop>;
 
 /*---------------------------------------------------STATEMENT*/
 <io_stm> ::= READ ID | WRITE <val>;
@@ -12,7 +12,7 @@ lookahead(3)<program> ::= <stms>;
 multi
 linea
 */
-<if> ::= [IF <expr>] THEN <stms> <S>;
+<if_stm> ::= [IF <expr>] THEN <stms> <S>;
 LOOKAHEAD(2)<S> ::=END | [ELSE <stms> END];
 
 <loop> ::= REPEAT <stms> UNTIL <expr>;
