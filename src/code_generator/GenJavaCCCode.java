@@ -55,7 +55,7 @@ public class GenJavaCCCode {
 					code.addParserLine(line);
 					
 					//inserisce il token tra le specifiche per il leker, se esso non è già stato inserito
-					if(!(code.containsLexerLine("<"+node.getVal()+":\t>") || code.containsLexerLine("|<"+node.getVal()+":\t>"))){
+					if(!(code.containsLexerLine("<"+node.getVal()+": >") || code.containsLexerLine("|<"+node.getVal()+": >"))){
 						
 						code.removeLastLexerLine();
 						if(code.lexerLines()==1)

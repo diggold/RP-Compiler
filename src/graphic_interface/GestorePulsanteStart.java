@@ -50,7 +50,7 @@ public class GestorePulsanteStart implements ActionListener{
 			Btree tree=new Btree(root);
 		
 			//generazione del codice per javaCC
-			this.display.append("\n\n____________________JavaCC-code:____________________\n\n");
+			this.display.append("\n\n____________________JavaCC-code____________________:\n\n");
 			GenJavaCCCode generator = new GenJavaCCCode();
 			JavaCCCode code=generator.genCode(tree);
 			Iterator<String> itr2=code.getLexerCode().iterator();
