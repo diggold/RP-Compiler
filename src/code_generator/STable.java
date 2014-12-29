@@ -7,6 +7,9 @@ import java.util.HashMap;
 //una hash table
 public class STable {
 	
+	//questa tabella è composta dal campo "regola"(chiave)
+	//e dal campo Info che rappresenta delle informazioni
+	//associate alla regola
 	private HashMap<String, Info> table;
 	
 	//costruttore
