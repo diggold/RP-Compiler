@@ -23,7 +23,7 @@ LOOKAHEAD(2)<S> ::=END | [ELSE <stms> END];
 //-----------------------------algebric expression
 LOOKAHEAD(2)<alg_expr> ::= <term_a> | <alg_expr> PIUOMENO <term_a>;
 <term_a> ::= <fatt_a> | <term_a> PERODIVISO <fatt_a>;
-<fatt_a> ::= ID | NUM | PARAPERTA <alg_expr> PARCHIUSA;
+<fatt_a> ::= ID | NUM | PARAPERTA <alg_expr> PARCHIUSA
 
 //------------------------------boolean expression
 <bool_expr> ::= <term_b> | <bool_expr> OR <term_b>;

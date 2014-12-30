@@ -237,7 +237,6 @@ public class Interface extends OutputStream{
 					// TODO Auto-generated catch block
 					e1.printStackTrace(displayPrint);
 					clearButton.setEnabled(true);
-					pr.close();
 				}				
 			}
 			
