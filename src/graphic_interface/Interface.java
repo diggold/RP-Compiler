@@ -18,12 +18,26 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import com.sun.xml.internal.ws.api.pipe.Fiber.Listener;
+import code_generator.Btree;
+import code_generator.GenJavaCCCode;
+import code_generator.JavaCCCode;
+import code_generator.Node;
+import compiler.ParseException;
+import compiler.RPLanguage;
 
 import java.awt.Color;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Iterator;
 
-
-public class Interface{
+//questa classe rappresenta implementa l'interfaccia grafica
+//dell'applicazione
+public class Interface extends OutputStream{
 	
 	private JFrame frame;
 	private JButton startButton;
@@ -31,14 +45,14 @@ public class Interface{
 	private JButton addFileButton;
 	private JFileChooser fileChooser;
 	private JTextField textFile;
-	private static JTextArea display;
+	private  JTextArea display;
+	public static PrintStream displayPrint;
 	
+	//costruttore
 	public Interface(){
 		
-		
-		
 		//---------------------------------------------------------------------------elementi di interfaccia
-		//creazione frame
+		//creazione frame e framePanel
 		int frameWidth=600;
 		int frameHeight=500;
 		this.frame=new JFrame("finestra");
@@ -47,7 +61,9 @@ public class Interface{
 		this.frame.setResizable(true);
 		JPanel framePanel=new JPanel();
 		frame.setContentPane(framePanel);
-		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(false);
+		framePanel.setVisible(false);
 		
 		//display
 		display=new JTextArea();
@@ -58,6 +74,7 @@ public class Interface{
 		JScrollPane displayScrollPanel=new JScrollPane(display);
 		displayScrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		displayScrollPanel.setVisible(true);
+		displayPrint=new PrintStream(this);
 		
 		//creazione bottone start
 		this.startButton=new JButton();
@@ -76,7 +93,7 @@ public class Interface{
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(".rp", "rp");
 		this.fileChooser.setFileFilter(filter);
 		this.fileChooser.setVisible(true);
-
+			
 		//creazione bottone addFile
 		this.addFileButton=new JButton();
 		this.addFileButton.setText("add file");
@@ -90,19 +107,19 @@ public class Interface{
 		this.textFile.setBackground(new Color(255,255,255));
 		
 		//--------------------------------------------------------------------------------------------------------layout
+		//grid bag layout
 		GridBagLayout gbl=new GridBagLayout();
 		framePanel.setLayout(gbl);
 		framePanel.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		GridBagConstraints c=new GridBagConstraints();
 		
+		//pannello per i bottoni start e clear
 		JPanel panel=new JPanel();
 		panel.setLayout(new FlowLayout());
 		panel.add(startButton);
-		panel.add(clearButton);
+		panel.add(clearButton);	
 		
-		//---------------------------------------------------------------------inserimento elementi nel frame principale		
-		
-		//aggiunta elementi al frame
+		//aggiunta elementi al framePanel
 		c.fill = GridBagConstraints.HORIZONTAL;
 		//c.weighty=0.05;
 		//c.weightx=0.05;
@@ -132,34 +149,98 @@ public class Interface{
 		c.gridy=2;
 		framePanel.add(panel, c);
 		
-		
-		
-		//frame.pack();
+		//visualizzazione del frame
 		frame.setVisible(true);
+		framePanel.setVisible(true);
 		
 		
 		//--------------------------------------------------------------------------------------------------------eventi
 		
 		//evento pressione bottone addFile
-		ActionListener listenerAddApkButton=new GestorePulsanteAddFile(this.fileChooser, this.frame, this.textFile, this.startButton);
-		
-		this.addFileButton.addActionListener(listenerAddApkButton);
-		
-		this.startButton.addActionListener(new GestorePulsanteStart(this.textFile, display, this.clearButton));
-		
-		//evento di chiusura frame
-		this.frame.addWindowListener(new java.awt.event.WindowAdapter() {
-			
-				public void windowClosing(java.awt.event.WindowEvent e) 
-				{ 
-					System.exit(0);
+		this.addFileButton.addActionListener(new ActionListener(){
+
+			//viene aperta la finestra di dialogo
+			//per la scelta del file da compilare
+			public void actionPerformed(ActionEvent e) {
+
+				switch(fileChooser.showOpenDialog(frame)){
+				
+					case JFileChooser.APPROVE_OPTION:{
+						String path=fileChooser.getSelectedFile().getPath();
+						
+						try{
+							//scelto il file da compilare viene abilitato il pulsante
+							//Start dell'interfaccia, per avviare la compilazione
+							textFile.setText(path);
+							startButton.setEnabled(true);
+						} catch (java.lang.NullPointerException ex) {textFile.setText("...");}
+						break;
+					}
 				}
+			}
+			
+			
+		});
+		
+		//evento pressione pulsante Start
+		this.startButton.addActionListener(new ActionListener(){
+			
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				PrintStream pr=null;
+				try {
+					//stream di input sul file da parsare
+					File inputFile = new File(textFile.getText());
+					
+					//parsing e generazione dell'albero sintattico
+					RPLanguage parser = new RPLanguage(new FileInputStream(new File(textFile.getText())));
+					Node root;
+					displayPrint.println("____________________PARSING____________________:\n");
+					root = parser.start();
+					Btree tree=new Btree(root);
+					
+					//stream di output sul nuovo file .jj
+					File outputFile = new File("./output/"+inputFile.getName()+".jj");
+					pr=new PrintStream(new FileOutputStream(outputFile));
+
+					//generazione del codice per javaCC
+					displayPrint.println("\n\n____________________JavaCC-code____________________:\n");
+					GenJavaCCCode generator = new GenJavaCCCode();
+					JavaCCCode code=generator.genCode(tree);
+					Iterator<String> itr2=code.getLexerCode().iterator();
+					String line=null;
+					//stampa a display e su file di output delle specifiche per il lexer
+					while(itr2.hasNext()){
+						line=itr2.next();
+						displayPrint.println(line);
+						pr.println(line);
+					}
+					//stampa a display e sul file di output delle specifiche per il parser di javaCC
+					displayPrint.println();
+					itr2=code.getParserCode().iterator();
+					while(itr2.hasNext()){
+						line=itr2.next();
+						displayPrint.println(line);
+						pr.println(line);
+					}
+						
+					display.append("\n\nè stato generato il file di output: "+outputFile.getPath()+"\n");
+					clearButton.setEnabled(true);
+					pr.close();
+				} catch (FileNotFoundException | ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace(displayPrint);
+					clearButton.setEnabled(true);
+					pr.close();
+				}				
+			}
+			
 		});
 		
 		//evento pressione tasto clear
 		this.clearButton.addActionListener(new ActionListener() {
-			
-			@Override
+
 			public void actionPerformed(ActionEvent e) {
 				
 				display.setText("");
@@ -168,10 +249,10 @@ public class Interface{
 		});
 		
 	}
-	
-	//metodo esportato per scrivere sul display del frame
-	public static void println(String line){
-		display.append(line+"\n");
+
+	@Override
+	public void write(int b) throws IOException {
+		display.append(String.valueOf((char) b));	
 	};
 
 }

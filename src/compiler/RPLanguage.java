@@ -10,7 +10,7 @@ public class RPLanguage implements RPLanguageConstants {
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
   final public Node start() throws ParseException {
  Node start_nptr, grammatica_nptr;
-    Interface.println("<start> ::= <grammatica>;");
+ Interface.displayPrint.println("<start> ::= <grammatica>;");
     grammatica_nptr = grammatica();
     jj_consume_token(0);
     start_nptr=grammatica_nptr;
@@ -21,7 +21,7 @@ public class RPLanguage implements RPLanguageConstants {
 //<grammatica> ::= <regole>;
   final public Node grammatica() throws ParseException {
  Node grammatica_nptr, regole_nptr;
-   Interface.println("<grammatica> ::= <regole>;");
+ Interface.displayPrint.println("<grammatica> ::= <regole>;");
     regole_nptr = regole();
     grammatica_nptr=regole_nptr;
     {if (true) return grammatica_nptr;}
@@ -31,7 +31,7 @@ public class RPLanguage implements RPLanguageConstants {
 //<regole> ::= <regola> <regola_queue>;
   final public Node regole() throws ParseException {
  Node regole_nptr, regola_nptr, regola_queue_nptr;
-   Interface.println("<regole> ::= <regola> <regola_queue>;");
+ Interface.displayPrint.println("<regole> ::= <regola> <regola_queue>;");
     regola_nptr = regola();
     regola_queue_nptr = regola_queue(regola_nptr);
     regole_nptr=regola_queue_nptr;
@@ -45,7 +45,7 @@ public class RPLanguage implements RPLanguageConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case OP_LOOKAHEAD:
     case NON_TERM:
-   Interface.println("<regola_queue> ::= <regole>;");
+    	Interface.displayPrint.println("<regola_queue> ::= <regole>;");
       regole_nptr = regole();
     //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
     //se la "gestione della regola" non ha comportato modifiche
@@ -73,7 +73,7 @@ public class RPLanguage implements RPLanguageConstants {
       break;
     default:
       jj_la1[0] = jj_gen;
-   Interface.println("<regola_queue> ::= eps;");
+      Interface.displayPrint.println("<regola_queue> ::= eps;");
 
     regola_queue_nptr=regola_nptr_inherited;
     {if (true) return regola_queue_nptr;}
@@ -87,7 +87,7 @@ public class RPLanguage implements RPLanguageConstants {
  Token OP_LOOKAHEAD_t, NUM_LOOKAHEAD_t, NON_TERM_t;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case OP_LOOKAHEAD:
-   Interface.println("<regola> ::= OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");
+    	Interface.displayPrint.println("<regola> ::= OP_LOOKAHEAD PARAPERTA_T NUM_LOOKAHEAD PARCHIUSA_T NON_TERM PUO_ESSERE <corpo> PV;");
       OP_LOOKAHEAD_t = jj_consume_token(OP_LOOKAHEAD);
       jj_consume_token(PARAPERTA_T);
       NUM_LOOKAHEAD_t = jj_consume_token(NUM_LOOKAHEAD);
@@ -168,7 +168,7 @@ public class RPLanguage implements RPLanguageConstants {
 
       break;
     case NON_TERM:
-   Interface.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");
+    	Interface.displayPrint.println("<regola> ::= NON_TERM PUO_ESSERE <corpo> PV;");
       NON_TERM_t = jj_consume_token(NON_TERM);
       jj_consume_token(PUO_ESSERE);
       corpo_nptr = corpo();
@@ -249,7 +249,7 @@ public class RPLanguage implements RPLanguageConstants {
 //<corpo> ::= <elementi> <elementi_queue>;
   final public Node corpo() throws ParseException {
  Node corpo_nptr, elementi_nptr, elementi_queue_nptr;
-   Interface.println("<corpo> ::=  <elementi> <elementi_queue>;");
+ Interface.displayPrint.println("<corpo> ::=  <elementi> <elementi_queue>;");
     elementi_nptr = elementi();
     elementi_queue_nptr = elementi_queue(elementi_nptr);
     elementi_nptr=elementi_queue_nptr;
@@ -262,7 +262,7 @@ public class RPLanguage implements RPLanguageConstants {
  Node elementi_queue_nptr, corpo_nptr;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case PIPE:
-   Interface.println("<elementi_queue> ::=  PIPE <corpo>;");
+    	Interface.displayPrint.println("<elementi_queue> ::=  PIPE <corpo>;");
       jj_consume_token(PIPE);
       corpo_nptr = corpo();
     elementi_queue_nptr=new Node(Symbol.OPPURE, "oppure", elementi_nptr_inherited, corpo_nptr);
@@ -270,7 +270,7 @@ public class RPLanguage implements RPLanguageConstants {
       break;
     default:
       jj_la1[2] = jj_gen;
-   Interface.println("<elementi_queue> ::= eps;");
+      Interface.displayPrint.println("<elementi_queue> ::= eps;");
 
     elementi_queue_nptr=elementi_nptr_inherited;
     {if (true) return elementi_queue_nptr;}
@@ -281,7 +281,7 @@ public class RPLanguage implements RPLanguageConstants {
 //<elementi> ::= <elemento> <elemento_queue>;
   final public Node elementi() throws ParseException {
  Node elementi_nptr, elemento_nptr, elemento_queue_nptr;
-   Interface.println("<elementi> ::=  <elemento> <elemento_queue>;");
+ Interface.displayPrint.println("<elementi> ::=  <elemento> <elemento_queue>;");
     elemento_nptr = elemento();
     elemento_queue_nptr = elemento_queue(elemento_nptr);
     elementi_nptr=elemento_queue_nptr;
@@ -297,14 +297,14 @@ public class RPLanguage implements RPLanguageConstants {
     case EPS:
     case NON_TERM:
     case TERM:
-   Interface.println("<elemento_queue> ::= <elementi>;");
+    	Interface.displayPrint.println("<elemento_queue> ::= <elementi>;");
       elementi_nptr = elementi();
     elemento_queue_nptr=new Node(Symbol.CONCAT, "concat", elemento_nptr_inherited, elementi_nptr);
     {if (true) return elemento_queue_nptr;}
       break;
     default:
       jj_la1[3] = jj_gen;
-   Interface.println("<elemento_queue> ::=  eps;");
+      Interface.displayPrint.println("<elemento_queue> ::=  eps;");
 
     elemento_queue_nptr=elemento_nptr_inherited;
     {if (true) return elemento_queue_nptr;}
@@ -318,25 +318,25 @@ public class RPLanguage implements RPLanguageConstants {
  Token TERM_t, NON_TERM_t, EPS_t;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case TERM:
-   Interface.println("<elemento> ::=  TERM;");
+    	Interface.displayPrint.println("<elemento> ::=  TERM;");
       TERM_t = jj_consume_token(TERM);
     elemento_nptr=new Node(Symbol.TERM, TERM_t.image);
     {if (true) return elemento_nptr;}
       break;
     case NON_TERM:
-   Interface.println("<elemento> ::=  NON_TERM;");
+    	Interface.displayPrint.println("<elemento> ::=  NON_TERM;");
       NON_TERM_t = jj_consume_token(NON_TERM);
     elemento_nptr=new Node(Symbol.NON_TERM, NON_TERM_t.image);
     {if (true) return elemento_nptr;}
       break;
     case EPS:
-   Interface.println("<elemento> ::=  EPS;");
+    	Interface.displayPrint.println("<elemento> ::=  EPS;");
       EPS_t = jj_consume_token(EPS);
     elemento_nptr=new Node(Symbol.EPS, EPS_t.image);
     {if (true) return elemento_nptr;}
       break;
     case PARAPERTA_Q:
-   Interface.println("<elemento> ::= PARAPERTA_Q <elementi> PARCHIUSA_Q;");
+    	Interface.displayPrint.println("<elemento> ::= PARAPERTA_Q <elementi> PARCHIUSA_Q;");
       jj_consume_token(PARAPERTA_Q);
       elementi_nptr = elementi();
       jj_consume_token(PARCHIUSA_Q);
