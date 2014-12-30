@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,6 +37,12 @@ import java.util.Iterator;
 //questa classe rappresenta implementa l'interfaccia grafica
 //dell'applicazione
 public class Interface extends OutputStream{
+	
+	//Main: avvia l'interfaccia
+	@SuppressWarnings("resource")
+	public static void main(String args[]){
+		new Interface();
+	}
 	
 	private JFrame frame;
 	private JButton startButton;
