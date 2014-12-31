@@ -1,6 +1,6 @@
 options
 {
-	JDK_VERSION = "1.7";
+	JDK_VERSION = "1.8";
 	static = false;
 }
 
