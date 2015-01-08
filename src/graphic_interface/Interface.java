@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 //questa classe rappresenta implementa l'interfaccia grafica
@@ -198,41 +199,77 @@ public class Interface extends OutputStream{
 					//stream di input sul file da parsare
 					File inputFile = new File(textFile.getText());
 					
-					//parsing e generazione dell'albero sintattico
+					//parser
 					RPLanguage parser = new RPLanguage(new FileInputStream(new File(textFile.getText())));
-					Node root;
-					displayPrint.println("____________________PARSING____________________:\n");
-					root = parser.start();
-					Btree tree=new Btree(root);
 					
-					//stream di output sul nuovo file .jj
-					File outputFile = new File("./output/"+inputFile.getName()+".jj");
-					pr=new PrintStream(new FileOutputStream(outputFile));
 
-					//generazione del codice per javaCC
-					displayPrint.println("\n\n____________________JavaCC-code____________________:\n");
-					GenJavaCCCode generator = new GenJavaCCCode();
-					JavaCCCode code=generator.genCode(tree);
-					Iterator<String> itr2=code.getLexerCode().iterator();
-					String line=null;
-					//stampa a display e su file di output delle specifiche per il lexer
-					while(itr2.hasNext()){
-						line=itr2.next();
-						displayPrint.println(line);
-						pr.println(line);
+					//---------------------------------------------------------------------parsing e costruzione dell'albero sintattico
+					displayPrint.println("Parsing:\n");
+					Node root=parser.start();
+					Btree tree=new Btree(root);//albero sintattico
+					//-----------------------------------------------------------------------------------------------------------------
+
+					//-------------------------------------------------------------------------------------------------controllo errori
+					//cè un errore se per un particolare non terminale della grammatica
+					//non è stata definita la relativa regola
+					ArrayList<String> errori=new ArrayList<String>();
+					Iterator<String> itr=parser.table_nonTerm.keySet().iterator();
+					String key; 
+					Boolean value;
+					while(itr.hasNext()){
+						key=itr.next(); 
+						value=parser.table_nonTerm.get(key);
+						if (value == false) //se il non terminale, in tabella dei simboli, presenta il flag "false"
+							errori.add(key);//allora vi è l'aggiunta del nome del non terminale alla lista degli errori
 					}
-					//stampa a display e sul file di output delle specifiche per il parser di javaCC
-					displayPrint.println();
-					itr2=code.getParserCode().iterator();
-					while(itr2.hasNext()){
-						line=itr2.next();
-						displayPrint.println(line);
-						pr.println(line);
-					}
+					//------------------------------------------------------------------------------------------------------------------
+
+					//---------------------------------------------------------------------------------generazione del codice per javaCC
+					//se non vi sono errori 
+					if(errori.isEmpty()){
 						
-					display.append("\n\nè stato generato il file di output: "+outputFile.getPath()+"\n");
+						//stream di output sul nuovo file .jj
+						File outputFile = new File("./output/"+inputFile.getName()+".jj");
+						pr=new PrintStream(new FileOutputStream(outputFile));
+						
+						//generatore di codice a partire dall'albero sintattico
+						displayPrint.println("\n\nJavaCC-code:\n");
+						GenJavaCCCode generator = new GenJavaCCCode();//generatore di codice a partire dall'albero sintattico
+						JavaCCCode code=generator.genCode(tree);//codice javaCC generato
+						
+						//scrittura in output della specifica per il lexer
+						String line=null;
+						Iterator<String> itr2=code.getLexerCode().iterator();
+						while(itr2.hasNext()){				
+						  line=itr2.next();
+						  displayPrint.println(line);
+						  pr.println(line);
+						}
+						
+						//scrittura in output della specifica per il parser
+						displayPrint.println();					
+						itr2=code.getParserCode().iterator();
+						while(itr2.hasNext()){
+						  line=itr2.next();
+						  displayPrint.println(line);
+						  pr.println(line);
+						}
+						pr.close();
+						displayPrint.println("\nE' stato creato il file di output: "+"./output/"+outputFile.getName()+"\n");
+					}
+					//se vi sono errori allora vengono segnalati in output
+					//senza generare il codice
+					else{
+					  String line=null;
+					  displayPrint.println("\nERRORE: per i seguenti simboli non terminali non e' stata definita una regola:");
+					  itr=errori.iterator();
+					  while(itr.hasNext()){
+						  line=itr.next();
+						  displayPrint.println(line);
+						}
+					}
 					clearButton.setEnabled(true);
-					pr.close();
+					
 				} catch (FileNotFoundException | ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace(displayPrint);

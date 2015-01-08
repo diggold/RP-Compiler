@@ -4,41 +4,80 @@ import java.util.*;
 import code_generator.*;
 
 public class RPLanguage implements RPLanguageConstants {
-        private STable table=new STable();
+        private STable_regole table_regole=new STable_regole();
+        private STable_nonTerm table_nonTerm= new STable_nonTerm();
 
         public static void main(String args []) throws ParseException, FileNotFoundException
         {
+                //file di input
                 File inputFile = new File("input/RPLanguage.rp");
-                PrintStream pr=new PrintStream(new FileOutputStream(new File("./output/"+inputFile.getName()+".jj")));
+
+                //parser
         RPLanguage parser = new RPLanguage(new FileInputStream(inputFile));
 
-                //parsing e costruzione dell'albero sintattico
+                //---------------------------------------------------------------------parsing e costruzione dell'albero sintattico
                 System.out.println("Parsing:\u005cn");
                 Node root=parser.start();
-                Btree tree=new Btree(root);
-                Visitor visitor=new Visitor();
+                Btree tree=new Btree(root);//albero sintattico
+                //-----------------------------------------------------------------------------------------------------------------
 
-
-//		//visita preorder dell'albero sinattico//		System.out.println("\nPRE-ORDER VISIT:\n");//		ArrayList <Node> nodeList = visitor.preorderVisit(tree);//		Iterator<Node> itr1=nodeList.iterator();//		while(itr1.hasNext())//    		System.out.println((itr1.next()).getVal()+"\n");////		//visita postorder dell'albero sintattico//		System.out.println("\nPOST-ORDER VISIT:\n");//		nodeList = visitor.postorderVisit(tree);//		itr1=nodeList.iterator();//		while(itr1.hasNext())//			System.out.println((itr1.next()).getVal()+"\n");
-
-                //generazione del codice per javaCC
-                String line=null;
-                System.out.println("\u005cn\u005cnJavaCC-code:\u005cn");
-                GenJavaCCCode generator = new GenJavaCCCode();
-                JavaCCCode code=generator.genCode(tree);
-                Iterator<String> itr2=code.getLexerCode().iterator();
-                while(itr2.hasNext()){
-                  line=itr2.next();
-                  System.out.println(line);
-                  pr.println(line);
+                //-------------------------------------------------------------------------------------------------controllo errori
+                //cè un errore se per un particolare non terminale della grammatica
+                //non è stata definita la relativa regola
+                ArrayList<String> errori=new ArrayList<String>();
+                Iterator<String> itr=parser.table_nonTerm.keySet().iterator();
+                String key;
+                Boolean value;
+                while(itr.hasNext()){
+                        key=itr.next();
+                        value=parser.table_nonTerm.get(key);
+                        if (value == false) //se il non terminale, in tabella dei simboli, presenta il flag "false"
+                                errori.add(key);//allora vi è l'aggiunta del nome del non terminale alla lista degli errori
                 }
-                System.out.println();
-                itr2=code.getParserCode().iterator();
-                while(itr2.hasNext()){
-                  line=itr2.next();
-                  System.out.println(line);
-                  pr.println(line);
+                //------------------------------------------------------------------------------------------------------------------
+
+                //---------------------------------------------------------------------------------generazione del codice per javaCC
+                //se non vi sono errori 
+                if(errori.isEmpty()){
+
+                        //file di output
+                        PrintStream pr=new PrintStream(new FileOutputStream(new File("./output/"+inputFile.getName()+".jj")));
+
+                        System.out.println("\u005cn\u005cnJavaCC-code:\u005cn");
+                        GenJavaCCCode generator = new GenJavaCCCode();//generatore di codice a partire dall'albero sintattico
+                        JavaCCCode code=generator.genCode(tree);//codice javaCC generato
+
+                        //scrittura in output della specifica per il lexer
+                        String line=null;
+                        Iterator<String> itr2=code.getLexerCode().iterator();
+                        while(itr2.hasNext()){
+                          line=itr2.next();
+                          System.out.println(line);
+                          pr.println(line);
+                        }
+
+                        //scrittura in output della specifica per il parser
+                        System.out.println();
+                        itr2=code.getParserCode().iterator();
+                        while(itr2.hasNext()){
+                          line=itr2.next();
+                          System.out.println(line);
+                          pr.println(line);
+                        }
+                        pr.close();
                 }
+                //se vi sono errori allora vengono segnalati in output
+                //senza generare il codice
+                else{
+                  String line=null;
+                  System.out.println("\u005cnERRORE: per i seguenti simboli non terminali non e' stata definita una regola:");
+                  itr=errori.iterator();
+                  while(itr.hasNext()){
+                          line=itr.next();
+                          System.out.println(line);
+                        }
+                }
+                //------------------------------------------------------------------------------------------------------------------
         }
 
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
@@ -132,16 +171,26 @@ public class RPLanguage implements RPLanguageConstants {
       jj_consume_token(PV);
     regola_nptr=new Node(Symbol.REGOLA, "regola", new Node(Symbol.NUM_LOOKAHEAD, NUM_LOOKAHEAD_t.image), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
 
+        //------------------------------------------------------------------------------------------------GESTIONE NON TERMINALE
+        //appena si va a derivare una specifica regola, si associa, al relativo non-terminale
+        //della grammatica, il flag "true", all'interno della tabella dei simboli non
+        //terminali, ad indicare che la regola per quel simbolo esiste.
+        //questa operazione viene eseguita solo se non è già stata eseguita in precedenza
+        System.out.println(NON_TERM_t.image+table_nonTerm.get(NON_TERM_t.image));
+        if(!table_nonTerm.contains(NON_TERM_t.image) || table_nonTerm.get(NON_TERM_t.image)==false)
+        table_nonTerm.put(NON_TERM_t.image, true);
+    //---------------------------------------------------------------------------------------------------------------------
+
         //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
-        if(!table.contains(NON_TERM_t.image))
-                table.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, Integer.parseInt(NUM_LOOKAHEAD_t.image)));
+        if(!table_regole.contains(NON_TERM_t.image))
+                table_regole.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, Integer.parseInt(NUM_LOOKAHEAD_t.image)));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
                 //preleviamo il corpo della regola già presente nella tabella
-                Node corpo=table.get(NON_TERM_t.image).getCorpoRegola();
+                Node corpo=table_regole.get(NON_TERM_t.image).getCorpoRegola();
 
                 //se la regola prelevata dall tabella ha un corpo
                 //formato da un solo simbolo terminale o non terminale
@@ -192,8 +241,8 @@ public class RPLanguage implements RPLanguageConstants {
                 //se il numero di simboli di lookahead della regola corrente è maggioredel numero di simboli di lookahead
                 //della regola di destinazione allora la regola di destinazione assume il numer di simboli di lookahead
                 //della regola corrente
-                if(table.get(NON_TERM_t.image).getLookaheadNumber() <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
-                        table.get(NON_TERM_t.image).getRegola().getSon().setVal(NUM_LOOKAHEAD_t.image);
+                if(table_regole.get(NON_TERM_t.image).getLookaheadNumber() <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
+                        table_regole.get(NON_TERM_t.image).getRegola().getSon().setVal(NUM_LOOKAHEAD_t.image);
                 //il link alla regola corrente viene annullato
                 regola_nptr=null;
         }
@@ -209,16 +258,26 @@ public class RPLanguage implements RPLanguageConstants {
       jj_consume_token(PV);
     regola_nptr=new Node(Symbol.REGOLA, "regola", new Node(Symbol.NUM_LOOKAHEAD, "1"), new Node(Symbol.NON_TERM, NON_TERM_t.image), corpo_nptr);
 
+    //------------------------------------------------------------------------------------------------GESTIONE NON TERMINALE
+        //appena si va a derivare una specifica regola, si associa, al relativo non-terminale
+        //della grammatica, il flag "true", all'interno della tabella dei simboli non
+        //terminali, ad indicare che la regola per quel simbolo esiste.
+        //questa operazione viene eseguita solo se non è già stata eseguita in precedenza
+        System.out.println(NON_TERM_t.image+table_nonTerm.get(NON_TERM_t.image));
+        if(!table_nonTerm.contains(NON_TERM_t.image) || table_nonTerm.get(NON_TERM_t.image)==false)
+        table_nonTerm.put(NON_TERM_t.image, true);
+    //---------------------------------------------------------------------------------------------------------------------
+
     //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
-        if(!table.contains(NON_TERM_t.image))
-                table.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, 1));
+        if(!table_regole.contains(NON_TERM_t.image))
+                table_regole.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, 1));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
           //preleviamo il corpo della regola già presente nella tabella
-                Node corpo=table.get(NON_TERM_t.image).getCorpoRegola();
+                Node corpo=table_regole.get(NON_TERM_t.image).getCorpoRegola();
 
                 //se la regola prelevata dall tabella ha un corpo
                 //formato da un solo simbolo terminale o non terminale
@@ -360,6 +419,15 @@ public class RPLanguage implements RPLanguageConstants {
     case NON_TERM:
    System.out.println("<elemento> ::=  NON_TERM;");
       NON_TERM_t = jj_consume_token(NON_TERM);
+    //------------------------------------------------------------------------------------------------GESTIONE NON TERMINALE
+    //se, nella tabella dei simboli non terminali, il non terminale che viene
+    //derivato correntemente non è presente, allora lo si aggiunge in tabella
+    //con il flag "false" per dire che non esiste ancora la regola associata a
+    //questo non terminale.
+    if(!table_nonTerm.contains(NON_TERM_t.image))
+        table_nonTerm.put(NON_TERM_t.image, false);
+    //----------------------------------------------------------------------------------------------------------------------
+
     elemento_nptr=new Node(Symbol.NON_TERM, NON_TERM_t.image);
     {if (true) return elemento_nptr;}
       break;
