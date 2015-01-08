@@ -23,6 +23,7 @@ import code_generator.JavaCCCode;
 import code_generator.Node;
 import compiler.ParseException;
 import compiler.RPLanguage;
+import compiler.TokenMgrError;
 
 import java.awt.Color;
 import java.io.File;
@@ -270,7 +271,7 @@ public class Interface extends OutputStream{
 					}
 					clearButton.setEnabled(true);
 					
-				} catch (FileNotFoundException | ParseException e1) {
+				} catch (FileNotFoundException | ParseException | TokenMgrError e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace(displayPrint);
 					clearButton.setEnabled(true);

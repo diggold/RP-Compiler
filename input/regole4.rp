@@ -1,0 +1,6 @@
+/*-----------------------------------------------------ESPRESSIONI ARITMETICHE*/
+<expr>::=<term> | <expr> + <term>;
+
+<term>::=<fatt> | <term> * <fatt>;
+
+<fatt>::= ID | NUM | ( <expr> );
