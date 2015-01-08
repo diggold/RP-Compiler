@@ -272,7 +272,8 @@ public class Interface extends OutputStream{
 					clearButton.setEnabled(true);
 					
 				} catch (FileNotFoundException | ParseException | TokenMgrError e1) {
-					// TODO Auto-generated catch block
+					//ridirezionamento dell'output di errore da System.out
+					//al display dell'interfaccia
 					e1.printStackTrace(displayPrint);
 					clearButton.setEnabled(true);
 				}				

@@ -1,6 +1,6 @@
 /*-----------------------------------------------------ESPRESSIONI ARITMETICHE*/
-<expr>::=<term> | <expr> + <term>;
+<expr>::=<term> | <expr> ADD <term>;
 
-<term>::=<fatt> | <term> * <fatt>;
+<term>::=<fatt> | <term> MUL <fatt>;
 
-<fatt>::= ID | NUM | ( <expr> );
+<fatt>::= ID | NUM | PARAPERTA_T <expr> PARCHIUSA_T;
