@@ -1,11 +1,18 @@
 /*-----------------------------------------------------PROGRAM*/
 <program> ::= <stms>;
 
+/*----------------------------------------------------STATEMENTS*/
 <stms> ::= <stm>;
+
 <stms> ::= [<stm>]PUNTOEVIRGOLA<stms>;
+
 <stms> ::= eps;
 
-<stm> ::= <io_stm>;
-<stm> ::= <assign>;
-<stm> ::= <if>;
-<stm> ::= <loop>;
+/*----------------------------------------------------STATEMENT*/
+<stm> ::= io_stm;
+
+<stm> ::= assign;
+
+<stm> ::= if;
+
+<stm> ::= loop;

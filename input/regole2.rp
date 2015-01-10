@@ -1,7 +1,32 @@
 /*-----------------------------------------------------PROGRAM*/
 <program> ::= <stms>;
+
+
+/*------------------------------------------------------STATEMETS*/
 lookahead(3)<stms> ::= <stm> | [<stm>] PUNTOEVIRGOLA <stms> | eps;
-<stm> ::= <io_stm> | <assign> | <if_stm> | <loop>;
-//lookahead(4)<stms> ::= <test>|TEST<test>;
-<stm>::=eps;
-//lookahead(2)<program>::= <stms><program>|TEST<stms>;
+
+
+/*-----------------------------------------------------STATEMENT*/
+lookahead(3)<stm> ::= <io_stm> | <assign> | <if_stm> | <loop>;
+
+//lookahead(4)<stms> ::= <val>|TEST<val>;/*aggiunta regola <stms>*/
+
+//lookahead(1)<stm>::=eps;/*aggiunta rgola <stm>*/
+
+/*--------------------------------------------------------------IO*/
+<io_stm> ::= READ ID | WRITE <val>;
+<val> ::= ID | NUM;
+
+/*----------------------------------------------------------ASSIGN*/
+<assign> ::= ID ASSEGNAMENTO <val>;
+
+/*-----------------------------------------------------------IF-ELSE*/
+<if_stm> ::= IF <val> THEN <stms> <S>;
+
+<S> ::=END | ELSE <stms> END;
+
+/*-------------------------------------------------------------LOOP*/
+<loop> ::= REPEAT <stms> UNTIL <val>;
+
+//lookahead(2)<program>::= <stms><program>|TEST<stms>;/*aggiunta regola <program>*/
+
