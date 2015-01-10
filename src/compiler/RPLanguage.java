@@ -11,73 +11,80 @@ public class RPLanguage implements RPLanguageConstants {
         private STable_regole table=new STable_regole();
         public STable_nonTerm table_nonTerm= new STable_nonTerm();
 
-        public static void main(String args []) throws ParseException, FileNotFoundException
+        public static void startParsing(String inputFileName) throws ParseException, FileNotFoundException, TokenMgrError
         {
-                //file di input
-                File inputFile = new File("input/RPLanguage.rp");
+        	
+			//stream di input sul file da parsare
+			File inputFile = new File(inputFileName);
+				
+			//parser
+			RPLanguage parser = new RPLanguage(new FileInputStream(new File(inputFileName)));
+			
+			//---------------------------------------------------------------------parsing e costruzione dell'albero sintattico
+			Interface.displayPrint.println("Parsing:\n");
+			Node root=parser.start();
+			Btree tree=new Btree(root);//albero sintattico
+			//-----------------------------------------------------------------------------------------------------------------
 
-                //file di output
-                PrintStream pr=new PrintStream(new FileOutputStream(new File("./output/"+inputFile.getName()+".jj")));
+			//-------------------------------------------------------------------------------------------------controllo errori
+			//cè un errore se per un particolare non terminale della grammatica
+			//non è stata definita la relativa regola
+			ArrayList<String> errori=new ArrayList<String>();
+			Iterator<String> itr=parser.table_nonTerm.keySet().iterator();
+			String key; 
+			Boolean value;
+			while(itr.hasNext()){
+				key=itr.next(); 
+				value=parser.table_nonTerm.get(key);
+				if (value == false) //se il non terminale, in tabella dei simboli, presenta il flag "false"
+					errori.add(key);//allora vi è l'aggiunta del nome del non terminale alla lista degli errori
+			}
+			//------------------------------------------------------------------------------------------------------------------
 
-                //parser
-        RPLanguage parser = new RPLanguage(new FileInputStream(inputFile));
-
-                //---------------------------------------------------------------------parsing e costruzione dell'albero sintattico
-                Interface.displayPrint.println("Parsing:\u005cn");
-                Node root=parser.start();
-                Btree tree=new Btree(root);//albero sintattico
-                //-----------------------------------------------------------------------------------------------------------------
-
-                //-------------------------------------------------------------------------------------------------controllo errori
-                //cè un errore se per un particolare non terminale della grammatica
-                //non è stata definita la relativa regola
-                ArrayList<String> errori=new ArrayList<String>();
-                Iterator<String> itr=parser.table_nonTerm.keySet().iterator();
-                String key;
-                Boolean value;
-                while(itr.hasNext()){
-                        key=itr.next();
-                        value=parser.table_nonTerm.get(key);
-                        if (value == false) //se il non terminale, in tabella dei simboli, presenta il flag "false"
-                                errori.add(key);//allora vi è l'aggiunta del nome del non terminale alla lista degli errori
-                }
-                //------------------------------------------------------------------------------------------------------------------
-
-                //---------------------------------------------------------------------------------generazione del codice per javaCC
-                //se non vi sono errori 
-                if(errori.isEmpty()){
-
-                        String line=null;
-                        Interface.displayPrint.println("\u005cn\u005cnJavaCC-code:\u005cn");
-                        GenJavaCCCode generator = new GenJavaCCCode();//generatore di codice a partire dall'albero sintattico
-                        JavaCCCode code=generator.genCode(tree);//codice javaCC generato
-
-                        Iterator<String> itr2=code.getLexerCode().iterator();//scrittura
-                        while(itr2.hasNext()){                                                           //della specifica					
-                          line=itr2.next();                                                                      //per il lexer                          Interface.displayPrint.println(line);                                                      //
-                          pr.println(line);                                                                      //
-                        }
-
-                        Interface.displayPrint.println();
-                        itr2=code.getParserCode().iterator();   //scrittura
-                        while(itr2.hasNext()){                                  //della specifica
-                          line=itr2.next();                                             //per il parser
-                          Interface.displayPrint.println(line);                             //
-                          pr.println(line);                                             //
-                        }
-                }
-                //se vi sono errori allora vengono segnalati in output
-                //senza generare il codice
-                else{
-                  String line=null;
-                  Interface.displayPrint.println("\u005cnERRORE: per i seguenti simboli non terminali non \u00e8 stata definita una regola:");
-                  itr=errori.iterator();
-                  while(itr.hasNext()){
-                          line=itr.next();
-                          Interface.displayPrint.println(line);
-                        }
-                }
-                //------------------------------------------------------------------------------------------------------------------
+			//---------------------------------------------------------------------------------generazione del codice per javaCC
+			//se non vi sono errori 
+			if(errori.isEmpty()){
+				
+				//stream di output sul nuovo file .jj
+				File outputFile = new File("./output/"+inputFile.getName()+".jj");
+				PrintStream pr=new PrintStream(new FileOutputStream(outputFile));
+					
+				//generatore di codice a partire dall'albero sintattico
+				Interface.displayPrint.println("\n\nJavaCC-code:\n");
+				GenJavaCCCode generator = new GenJavaCCCode();//generatore di codice a partire dall'albero sintattico
+				JavaCCCode code=generator.genCode(tree);//codice javaCC generato
+				
+				//scrittura in output della specifica per il lexer
+				String line=null;
+				Iterator<String> itr2=code.getLexerCode().iterator();
+				while(itr2.hasNext()){				
+				  line=itr2.next();
+				  Interface.displayPrint.println(line);
+				  pr.println(line);
+				}
+					
+				//scrittura in output della specifica per il parser
+				Interface.displayPrint.println();					
+				itr2=code.getParserCode().iterator();
+				while(itr2.hasNext()){
+				  line=itr2.next();
+				  Interface.displayPrint.println(line);
+				  pr.println(line);
+				}
+				pr.close();
+				Interface.displayPrint.println("\nE' stato creato il file di output: "+"./output/"+outputFile.getName()+"\n");
+			}
+			//se vi sono errori allora vengono segnalati in output
+			//senza generare il codice
+			else{
+			  String line=null;
+			  Interface.displayPrint.println("\nERRORE: per i seguenti simboli non terminali non e' stata definita una regola:");
+			  itr=errori.iterator();
+			  while(itr.hasNext()){
+				  line=itr.next();
+				  Interface.displayPrint.println(line);
+				}
+			}
         }
 
 /*----------------------------------------------------------------------------------------REGOLE DI PRODUZIONE*/
