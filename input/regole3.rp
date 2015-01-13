@@ -4,7 +4,7 @@
 /*----------------------------------------------------STATEMENTS*/
 <stms> ::= <stm>;
 
-<stms> ::= [<stm>]PUNTOEVIRGOLA<stms>;
+<stms> ::= <stm>PUNTOEVIRGOLA<stms>;
 
 <stms> ::= eps;
 

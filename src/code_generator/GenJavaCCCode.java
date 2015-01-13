@@ -11,6 +11,7 @@ public class GenJavaCCCode {
 		
 		code=new JavaCCCode();
 		
+		//prima parte del codice di specifica per il lexer
 		code.addLexerLine("options{\n}\n\nPARSER_BEGIN(LanguageName)\npublic class LanguageName\n{\n}\nPARSER_END(LanguageName)\n\nTOKEN:\n{");
 		code.addLexerLine("}");
 		this.genCode(tree.getRoot());
