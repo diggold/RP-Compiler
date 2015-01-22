@@ -62,7 +62,7 @@ public class Interface extends OutputStream{
 		//creazione frame e framePanel
 		int frameWidth=600;
 		int frameHeight=500;
-		this.frame=new JFrame("finestra");
+		this.frame=new JFrame("RPCompiler");
 		this.frame.setLayout(null);
 		this.frame.setBounds(0,0,frameWidth,frameHeight);
 		this.frame.setResizable(true);
