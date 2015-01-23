@@ -8,7 +8,7 @@ import java.util.*;
 import code_generator.*;
 
 public class RPLanguage implements RPLanguageConstants {
-        private STable_regole table=new STable_regole();
+        private STable_regole table_regole=new STable_regole();
         public STable_nonTerm table_nonTerm= new STable_nonTerm();
 
         public static void startParsing(String inputFileName) throws ParseException, FileNotFoundException, TokenMgrError
@@ -191,13 +191,13 @@ public class RPLanguage implements RPLanguageConstants {
         //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
-        if(!table.contains(NON_TERM_t.image))
-                table.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, Integer.parseInt(NUM_LOOKAHEAD_t.image)));
+        if(!table_regole.contains(NON_TERM_t.image))
+                table_regole.put(NON_TERM_t.image, new Info(corpo_nptr, regola_nptr.getSon()));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
                 //preleviamo il corpo della regola già presente nella tabella
-                Node corpo=table.get(NON_TERM_t.image).getCorpoRegola();
+                Node corpo=table_regole.get(NON_TERM_t.image).getCorpoRegola();
 
                 //se la regola prelevata dall tabella ha un corpo
                 //formato da un solo simbolo terminale o non terminale
@@ -248,8 +248,8 @@ public class RPLanguage implements RPLanguageConstants {
                 //se il numero di simboli di lookahead della regola corrente è maggioredel numero di simboli di lookahead
                 //della regola di destinazione allora la regola di destinazione assume il numer di simboli di lookahead
                 //della regola corrente
-                if(table.get(NON_TERM_t.image).getLookaheadNumber() <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
-                        table.get(NON_TERM_t.image).getRegola().getSon().setVal(NUM_LOOKAHEAD_t.image);
+                if(Integer.parseInt(table_regole.get(NON_TERM_t.image).getLookahead().getVal()) <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
+        			table_regole.get(NON_TERM_t.image).getLookahead().setVal(NUM_LOOKAHEAD_t.image);
                 //il link alla regola corrente viene annullato
                 regola_nptr=null;
         }
@@ -278,13 +278,13 @@ public class RPLanguage implements RPLanguageConstants {
     //-------------------------------------------------------------------------------------------------------GESTIONE REGOLA
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
-        if(!table.contains(NON_TERM_t.image))
-                table.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, 1));
+        if(!table_regole.contains(NON_TERM_t.image))
+                table_regole.put(NON_TERM_t.image, new Info(corpo_nptr, regola_nptr.getSon()));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
           //preleviamo il corpo della regola già presente nella tabella
-                Node corpo=table.get(NON_TERM_t.image).getCorpoRegola();
+                Node corpo=table_regole.get(NON_TERM_t.image).getCorpoRegola();
 
                 //se la regola prelevata dall tabella ha un corpo
                 //formato da un solo simbolo terminale o non terminale

@@ -185,7 +185,7 @@ public class RPLanguage implements RPLanguageConstants {
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
         if(!table_regole.contains(NON_TERM_t.image))
-                table_regole.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, Integer.parseInt(NUM_LOOKAHEAD_t.image)));
+                table_regole.put(NON_TERM_t.image, new Info(corpo_nptr, regola_nptr.getSon()));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
@@ -241,8 +241,8 @@ public class RPLanguage implements RPLanguageConstants {
                 //se il numero di simboli di lookahead della regola corrente è maggioredel numero di simboli di lookahead
                 //della regola di destinazione allora la regola di destinazione assume il numer di simboli di lookahead
                 //della regola corrente
-                if(table_regole.get(NON_TERM_t.image).getLookaheadNumber() <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
-                        table_regole.get(NON_TERM_t.image).getRegola().getSon().setVal(NUM_LOOKAHEAD_t.image);
+                if(Integer.parseInt(table_regole.get(NON_TERM_t.image).getLookahead().getVal()) <  Integer.parseInt(NUM_LOOKAHEAD_t.image))
+                        table_regole.get(NON_TERM_t.image).getLookahead().setVal(NUM_LOOKAHEAD_t.image);
                 //il link alla regola corrente viene annullato
                 regola_nptr=null;
         }
@@ -272,7 +272,7 @@ public class RPLanguage implements RPLanguageConstants {
         //se la regola non è presente in tabella
         //allora la si inserisce e il parsing non subisce alterazioni
         if(!table_regole.contains(NON_TERM_t.image))
-                table_regole.put(NON_TERM_t.image, new Info(regola_nptr, corpo_nptr, 1));
+                table_regole.put(NON_TERM_t.image, new Info(corpo_nptr, regola_nptr.getSon()));
         //se la regola è già presente allora il suo corpo lo si sposta
         //nel corpo della regola già definita
         else{
